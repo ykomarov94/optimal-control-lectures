@@ -4,3 +4,5 @@
 *.fls
 *.log
 *.pdf
+*.aux
+*.out
