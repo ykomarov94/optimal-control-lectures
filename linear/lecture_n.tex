@@ -7,9 +7,9 @@
 \begin{equation}
     x(t_0) = x^0 \to x(t_1) = x^1,
 \end{equation}
-минимизируя при этом норму управления в пространстве $\L_2$:
+минимизируя при этом норму управления в пространстве $L_2$:
 \begin{equation}
-    \mathcal{J}(u(\cdot)) = \norm{u(\cdot)}_{\L_2} \to \inf\limits_{u(\cdot)}
+    \mathcal{J}(u(\cdot)) = \norm{u(\cdot)}_{L_2} \to \inf\limits_{u(\cdot)}
 \end{equation}
 
 Данной постановке соответствует задача моментов
@@ -20,14 +20,14 @@
 
 \begin{bf}Внимание! В этой лекции волевым усилием давайте во избежание дальнейшей путаницы начнём обозначать множество достижимости для задачи моментов за $\mathscr{H}_{\mu}^0$ вместо $\mathscr{X}_{\mu}^0$, чтобы точно не было никаких мыслей про то, что икс там и в обычном уравнении - это что-то очень похожее.\end{bf}
 
-Пусть управление ограничено некоторым абстрактным значением $\mu$. Множеством достижимости для задачи моментов (ЗМ) при ограничении $\norm{u(\cdot)}_{\L_2} \leqslant \mu$ договорились называть
+Пусть управление ограничено некоторым абстрактным значением $\mu$. Множеством достижимости для задачи моментов (ЗМ) при ограничении $\norm{u(\cdot)}_{L_2} \leqslant \mu$ договорились называть
 \begin{equation}
-    \H_{\mu}^0 = \left\{ \int_{t_0}^{t_1} H(t_1, t) u(t) dt \mid \norm{u(\cdot)}_{\L_2} \leqslant \mu \right\}.
+    \H_{\mu}^0 = \left\{ \int_{t_0}^{t_1} H(t_1, t) u(t) dt \mid \norm{u(\cdot)}_{L_2} \leqslant \mu \right\}.
 \end{equation}
 
 Затем мы нашли опорную функцию множества достижимости этой ЗМ:
 $$
-\rho(l, \H_{\mu}^0) = \mu \norm{H'(t_1, \cdot)l}_{\L_2} = \mu \sqrt{\scalar{l}{Wl}},
+\rho(l, \H_{\mu}^0) = \mu \norm{H'(t_1, \cdot)l}_{L_2} = \mu \sqrt{\scalar{l}{Wl}},
 $$
 где $W = W(t_1, t_0) = \int_{t_0}^{t_1} H(t_1, t) H'(t_1, t) dt$ --- матрица управляемости.
 
@@ -69,10 +69,27 @@ $$
 $$
 \sum\limits_{j=1}^{N} \left[ \int\limits_{\tau_{j-1}}^{\tau_j} H(t_1, t) dt \right] \hat{u}^j = c
 $$
-Обозначим (при $m = 1$ выполнено ${H(t_1, t) \in \R^{n \times 1}}$)
+При этом
 $$
-\int\limits_{\tau_{j-1}}^{\tau_j} H(t_1, t) dt = [\hat{g}^j_1, \ldots, \hat{g}^j_n]'
+H(t_1, t) =
+\begin{bmatrix}
+    - h_1(t_1, t) -\\
+    - h_2(t_1, t) -\\
+    \ldots \\
+    - h_n(t_1, t) -\\
+\end{bmatrix}
+\in \R^{n \times m}.
 $$
+
+Вспомним, что мы для простоты взяли $m = 1$ и обозначим
+$$
+\hat{g}^j_i = \int\limits_{\tau_{j-1}}^{\tau_j} h_i(t_1, t) dt,
+$$
+то есть
+$$
+\int\limits_{\tau_{j-1}}^{\tau_j} H(t_1, t) dt = [\hat{g}^j_1, \ldots, \hat{g}^j_n]'.
+$$
+
 Подставим $c = [c_1  \ldots c_n]'$ $\thus$ получаем СЛАУ относительно $\hat{u}^j$:
 $$
 \sum\limits_{j=1}^{N} \hat{g}^j_i \hat{u}^j = c_i, \; i = \overline{1, n}.
@@ -101,3 +118,114 @@ $$
 $$
 
 Пусть теперь $n = 2, N = 3$.
+
+Поскольку уравнение $\scalar{g}{u} = c$ задаёт гиперплоскость (относительно $u$, с нормалью $g$ и вектором сдвига $c$), получаемая нами система уравнений
+$$
+\left\{
+    \begin{aligned}
+        & \scalar{\hat{g}_1}{\hat{u}} = c_1, \\
+        & \scalar{\hat{g}_2}{\hat{u}} = c_2,
+    \end{aligned}
+\right.
+$$
+задаёт пересечение двух гиперплоскостей --- обозначим эту прямую за $L$, $L \bot \L \{\hat{g}_1, \hat{g}_2\}$. Мы ищем управление $\hat{u} \in L$; при этом оно должно быть оптимальным:
+$$
+\hat{u}^* \in L \colon \; \norm{\hat{u}^*} \leqslant \norm{\hat{u}} \forall \hat{u} \in L.
+$$
+
+Ясно, что
+$$
+\hat{u}^* \in \L \{\hat{g}_1, \hat{g}_2\} \cap L;
+$$
+на каждом отрезке аппроксимации (напомним: мы взяли скалярное $u(t) \in \R$ и приблизили его тремя кусочно-постоянными отрезками времени, N=3)
+$$
+\hat{u}^{*j} = \alpha_1 \hat{g}_1^j + \alpha_2 \hat{g}_2^j, \; j = 1, 2, 3.
+$$
+
+Что мы знаем про $\hat{g}_1^j$? Из теоремы о среднем
+$$
+\hat{g}_i^j = h_i(t_1, \xi_i^j) \Delta t, \; \xi_i^j \in (\tau_{j-1}, \tau_{j}),
+$$
+то есть
+$$
+\hat{u}^{*}(\tau_{j-1}) = \hat{u}^{*j} =
+\begin{bmatrix}
+    h_1(t_1, \xi_1^j), \\
+    h_2(t_1, \xi_2^j)    
+\end{bmatrix}'
+\begin{pmatrix}
+    \alpha_1\\
+    \alpha_2
+\end{pmatrix},
+\; j = 1, \ldots, N.
+$$
+
+Устремим теперь $N \to \infty$. Тогда $\tau_{j-1}, \tau_{j} \to t$, $t \in [\tau_{j-1}, \tau_{j}]$, $\xi_i^j \to t$, и
+$$
+u^*(t) = 
+\begin{bmatrix}
+    h_1(t_1, t, \\
+    h_2(t_1, t)    
+\end{bmatrix}'
+\begin{pmatrix}
+    \alpha_1\\
+    \alpha_2
+\end{pmatrix}
+= H'(t_1, t) \alpha
+= \alpha_1 h_1(t_1, t) + \alpha_2 h_2(t_1, t).
+$$
+Подставим это управление в (ЗМ), получим:
+$$
+\   int_{t_0}^{t_1} H(t_1, t) H'(t_1, t) \alpha dt = c \thus alpha = W^{-1} c,
+$$
+что совпадает с нашим решением, которое было получено раньше.
+
+Вернёмся к \underline{линейной независимости}.
+Система $(\star)$ разрешима, если её матрица Грамма не вырождена:
+$$
+\Gamma = \left[ \scalar{\hat{g}_k}{\hat{g}_l} \right] =
+\begin{bmatrix}
+    \scalar{\hat{g}_1}{\hat{g}_1} & \scalar{\hat{g}_1}{\hat{g}_2} \\
+    \scalar{\hat{g}_2}{\hat{g}_1} & \scalar{\hat{g}_2}{\hat{g}_2} 
+\end{bmatrix}
+$$
+Каждое скалярное произведение в этой матрице
+$$
+\scalar{\hat{g}_k}{\hat{g}_l} = (\Delta t)^2 \cdot \scalar{
+\begin{bmatrix}
+    h_k(t_1, \xi_k^1) \\
+    \ldots \\
+    h_k(t_1, \xi_k^N)
+\end{bmatrix}
+}{
+    \begin{bmatrix}
+        h_l(t_1, \xi_l^1) \\
+        \ldots \\
+        h_l(t_1, \xi_l^N)
+    \end{bmatrix}
+} = \Delta t^2 \cdot <\ldots>.
+$$
+
+Верно, что $\abs{\Gamma} \neq 0 \Leftrightarrow \abs{\tilde{\Gamma}} \neq 0$, где
+$$
+\tilde{\Gamma} = 
+\begin{bmatrix}
+    \dfrac{\scalar{\hat{g}_k}{\hat{g}_l}}{\Delta t}
+\end{bmatrix},
+$$
+и
+$$
+\dfrac{\scalar{\hat{g}_k}{\hat{g}_l}}{\Delta t} = \Delta t \cdot <\ldots> =
+\sum\limits_{j = 1}^{N} h_k (t_1, \xi_k^j) h_l (t_1, \xi_l^j) \to \{ N \to \infty, m = 1 \} \to \int\limits_{t_0}^{t_1} h_k (t_1, t) h_l(t_1, t).
+$$
+
+Вспоминаем про $W(t_1, t_0) = (w_{kl}(t_1, t_0))$, следовательно,
+$$
+\int\limits_{t_0}^{t_1} h_k (t_1, t) h_l(t_1, t) = w_{kl}(t_1, t_0) =
+\int\limits_{t_0}^{t_k} \scalar{h_k(t_1, t)}{ h_l(t_1, t)} dt = \scalar{h_k(t_1, \cdot)}{h_k(t_1, \cdot)}_{L_2}.
+$$
+
+Таким образом, $W$ --- матрица Грама функций
+$$
+h_1(t_1, \cdot), \ldots, h_n(t_1, \cdot) \in \R^{1 \times m}.
+$$
