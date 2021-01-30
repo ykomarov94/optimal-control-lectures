@@ -1,0 +1,109 @@
+\chapter*{Частный случай ПМП}
+
+\textit{Второй семестр посвящён исследованию задач с нелинейной динамикой. Главное отличие таких задач от рассмотренных в прошлом семестре в том, что множества достижимости чаще всего не будут выпуклыми --- и это накладывает ограничения на методы для отыскания решений.}
+
+\textit{Как правило, задачи ОУ для нелинейных систем решают при помощи универсального метода --- Принципа Максимума Л.С.~Понтрягина (ПМП), с которым мы сегодня и начнём своё знакомство.}
+
+\section*{Постановка задачи}
+\begin{equation}\label{l1:system}
+\left\{
+    \begin{aligned}
+        & \dot{x}(t) = f(x(t), u(t)), \\
+        & u(t) \in \mathscr{P}, \\
+        & f = (f^1, \ldots, f^n).
+    \end{aligned}
+\right.
+\end{equation}
+
+В качестве $\mathscr{P}$ можно рассматривать, например,
+$$
+\begin{aligned}
+    & \mathscr{P} = \R^m, \\
+    & \mathscr{P} \in \mathrm{conv} \R^m.
+\end{aligned}
+$$
+
+$$
+\begin{aligned}
+    & u(\cdot) \text{ --- измерима},
+\end{aligned}
+$$
+\textit{Пока что не затрагиваем вопрос, в каком смысле мы будем понимать траекторию системы \ref{l1:system}. Позже мы формализуем траекторию системы с измеримым управлением с использованием решения по Каратеодори.}
+$$
+\begin{aligned}
+    & t_0, x_0, x_1 \text{ --- фикс.}, \\
+    & t_0 \in \R, \\
+    & x_0, x_1 \in \R^n.
+\end{aligned}
+$$
+
+При этом $t_1$ ---  свободно (не фиксировано),
+$$
+t_1 \in \R, \quad t_1 \geqslant t_0.
+$$
+
+Искомое управление должно минимизировать функционал
+$$
+J = \int\limits_{t_0}^{t_1} f^0(x(t), u(t)) dt \to \inf\limits_{u(\cdot)}.
+$$
+
+\section*{Переход к ПМП}
+Для того, чтобы записать ПМП для рассматриваемой задачи, <<спрячем>> $J$ внутрь системы \eqref{l1:system}. Введём новую переменную
+$$
+    x_0(\tau) = \int\limits_{t_0}^{\tau} f^0(x(t), u(t)) dt.
+$$
+
+Тогда, переобозначив
+$$
+\begin{aligned}
+    & \tilde{f} = (f^0, f^1, \ldots, f^n)' \\
+    & \tilde{x} = (x_0, x_1, \ldots, x_n)'
+\end{aligned}
+$$
+приведём систему к виду $\dot{\tilde{x}} = \tilde{f}(\tilde{x}(t), u(t))$.
+
+Вообще говоря, более точная её запись $\dot{\tilde{x}} = \tilde{f}(x(t), u(t))$, поскольку 
+$$
+\dot{\tilde{x}} = \tilde{f}(\tilde{x}(t), u(t)) \Leftrightarrow
+    \left\{
+        \begin{aligned}
+            & \dot{x}_0(t) = f_0(x(t), u(t)), \\
+            & \dot{x}(t) = f(x(t), u(t)),
+        \end{aligned}
+    \right.
+$$
+то есть левая часть зависит только от $x(t)$ и не зависит от $x_0$.
+
+Краевые условия приобретают вид
+$$
+\tilde{x}(t_0) = \begin{bmatrix} 0 \\ x^0 \end{bmatrix}
+\Leftrightarrow
+\left\{
+    \begin{aligned}
+        & x_0(t_0) = 0, \\
+        & x(t_0) = x^0.
+    \end{aligned}
+\right.
+$$
+
+Обобщая сказанное, получаем:
+\begin{equation}\label{l1:system}
+    \left\{
+        \begin{aligned}
+            & \dot{\tilde{x}}(t) = f(x(t), u(t)), \\
+            & u(t) \in \mathscr{P}, \\
+            & \tilde{x}(t_0) = \begin{bmatrix} 0 \\ x^0 \end{bmatrix}, \quad \tilde{x}(t_1) \in \R \times \left\{ x^1 \right\}.
+        \end{aligned}
+    \right.
+\end{equation}
+
+\subsection*{Функция Гамильтона-Понтрягина}
+$$
+\tilde{\mathscr{H}}(\tilde{\psi}, \tilde{x}, u) \colon \R^{n+1} \times \R^{n+1} \times \R^m \to \R.
+$$
+\textit{Обратите внимание, что $\tilde{\psi}, \tilde{x}, u$ --- конечномерные аргументы, а не функции!}
+
+Здесь $\tilde{\psi} = (\psi_0,\ \psi_1, \ldots, \psi_n)' = (\psi_0, \psi)'$ --- сопряжённые переменные. По определению
+$$
+\tilde{\mathscr{H}}(\tilde{\psi}, \! \tilde{x}, \! u) \! = \! \scalar{\tilde{\psi}}{\tilde{f}(\tilde{x},\!u)} \! = \! \scalar{\tilde{\psi}}{\tilde{f}(x,\!u)} \! = \! \psi_0 f^0(x,\!u) + \psi_1 f^1(x,\!u) + \ldots + \psi_n f^n(x,\!u).
+$$
