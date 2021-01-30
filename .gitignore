@@ -6,3 +6,5 @@
 *.pdf
 *.aux
 *.out
+
+.DS_Store
