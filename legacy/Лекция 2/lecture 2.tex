@@ -1,0 +1,488 @@
+\documentclass[12pt, a4paper]{article}
+
+
+
+%\usepackage[cp1251]{inputenc}
+\usepackage{a4wide} % уменьшает поля
+\textwidth=11.5cm
+
+\usepackage[utf8]{inputenc}
+\usepackage[russian]{babel} % включает русский язык
+\usepackage{graphicx} % позволяет подключить .eps - файлы
+\usepackage{amsmath}
+\usepackage{amsthm} % теоремы от AMS
+\usepackage{amssymb} % для работы с математическими R и проч.
+\usepackage{floatrow}
+\usepackage{mathrsfs}
+\usepackage{mathtools} % содержит \coloneqq -- присванивание
+
+\usepackage{accents}
+\newcommand{\ubar}[1]{\underaccent{\bar}{#1}}
+
+\usepackage[usenames]{color} % чтобы цвета в hyperref понимались
+\usepackage{ulem} % дает зачеркнутый текст по \sout
+\usepackage[unicode,
+			breaklinks,colorlinks,
+			linkcolor=Black,
+			citecolor=Black,
+			hyperfootnotes=false]
+			{hyperref} % кликабельное оглавление без кликабельных футноутов
+
+
+\newtheoremstyle{rusdef}
+  {3pt}% measure of space to leave above the theorem. E.g.: 3pt
+  {3pt}% measure of space to leave below the theorem. E.g.: 3pt
+  {\itshape}% name of font to use in the body of the theorem
+  {\parindent}% measure of space to indent
+  {\bfseries}% name of head font
+  {.}%
+  {.5em}%
+  {}
+   
+
+\theoremstyle{rusdef}
+\newtheorem{define}{Определение} % определение по-русски
+\newtheorem{theorem}{Теорема}
+\newtheorem{prop}{Предложение}
+\renewcommand\qedsymbol{$\blacksquare$}
+\newtheorem{statement}{Утверждение}
+\newtheorem{remark}{Замечание}
+\newtheorem{lemma}{Лемма}
+\newtheorem{corol}{Следствие}
+\newtheorem{assume}{Предположение}
+\newtheorem{example}{Пример}
+
+\newcommand\abs[1]{\left\lvert #1 \right\rvert} % модуль
+\newcommand\bracket[1]{\left( #1 \right)} % скобки
+\newcommand\scalar[1]{\left < #1 \right >} % скалярное произведение
+\newcommand{\R}{\ensuremath{\mathbb{R}}} % R - мн-во вещественных чисел
+\newcommand{\N}{\ensuremath{\mathbb{N}}} % N - мн-во натуральных чисел
+\newcommand{\X}{\mathscr{X}} % красивая Х для начального и конечного множеств
+\renewcommand{\P}{\mathscr{P}} % красивая P для ограничений на управление
+\newcommand{\then}{\Rightarrow}
+\newcommand{\h}{\mathbb{h}}
+\newcommand{\e}{\mathbf{e}}
+
+\renewcommand{\H}{\mathcal{H}} % красивая H для Гамильтона-Понтрягина
+\renewcommand{\d}{\partial} % чтобы долго не писать частную производную
+\newcommand{\norm}[1]{\left\lVert #1 \right\rVert} % норма
+\DeclareMathOperator*{\thus}{\Rightarrow} % следствие с возможностью использовать limits
+\DeclareMathOperator*{\To}{\longrightarrow}
+\DeclareMathOperator*{\Argmax}{Argmax} % Argmax с возмножностью использовать limits
+
+\usepackage{indentfirst} % абзац после заголовка
+
+\DeclareMathOperator{\sgn}{sgn} % сигнум
+\DeclareMathOperator{\rank}{rank} % ранг
+
+\begin{document}
+
+\begin{center}
+{\Huge \textbf{Теоремы о зависимости решения от начальных данных}}
+\end{center}
+
+Сегодня мы затронем вопросы зависимости решения по Каратеодори от начальных данных, а именно исследуем непрерывность и дифференцируемость.
+
+Рассмотрим следющую задачу Коши:
+\begin{equation}\label{eq:system}
+\left\{
+\begin{aligned}
+& \dot{x}(t) = g(t, x(t)),\\
+& x(t_0) = x^0,
+\end{aligned}
+\right.
+\tag{ЗК}
+\end{equation}
+её решение будем обозначать$x[t] = x(t, t_0, x^0)$.
+
+\textbf{Вопрос 1:} когда $x(t, t_0, x^0)$ непрерывна по $(t, t_0, x^0)$? \textit{Отдельно по $t$ решение $x[t]$ всегда непрерывно по определению решения \eqref{eq:system}}.
+
+\textbf{Вопрос 2:} когда $x(t, t_0, x^0)$ дифференцируема по $x^0$, а $\dfrac{\d x}{\d x^0}(t, x, x^0)$ непрерывна по $(t, t_0, x^0)$.
+
+Для линейных систем всё просто: если $\dot{x}(t) = A(t) x(t) + c(t)$, то
+$$
+x(t) = X(t, t_0) x^0 + \int\limits_{t_0}^{t} X(t,s) c(s) ds.
+$$
+Поскольку $X(t, t_0)$ непрерывна, ответ на первый вопрос <<да>>. А что с дифференцируемостью? Обозначим
+$$
+Y[t] = \dfrac{\d x(t)}{\d x^0} = X(t, t_0),
+$$
+решение этого матричного дифференциального уравнения:
+$$
+Y[t] = Y(t, t_0, x^0).
+$$
+Если мы его продифференцируем, получим
+$$
+\left\{
+\begin{aligned}
+& \dfrac{dY}{dt} = A(t) Y[t], \\
+& Y[t_0] = E,
+\end{aligned}
+\right.
+$$
+то есть здесь всё снова следует из общего вида решения.
+
+Для систем общего вида:
+\begin{itemize}
+\item Вопрос 1 --- ответ <<да>> (при накладываемых условиях на $g(t,x)$);
+\item Вопрос 2 --- ответ <<да>> при условии, что существует $\exists \dfrac{\d g}{\d x}$ измерима по $t$ и непрерывна по $x$.
+\end{itemize}
+
+Продифференцируем $\dot{x}[t] = g(t, x[t])$ по $x^0$:
+$$
+\dfrac{\d}{\d x^0} \left( \dfrac{\d x(t, t_0, x^0)}{\d t} \right) = 
+\dfrac{\d}{\d x^0} \left( g(t, x(t, t_0, x^0)) \right),
+$$
+$$
+\dfrac{\d}{\d t} \left( \dfrac{\d x(t, t_0, x^0)}{\d x^0} \right) = 
+\dfrac{\d g}{\d x} \frac{\d x}{\d x^0}.
+$$
+Вновь обозначив $Y[t] = \dfrac{\d x}{\d x^0}$, получим уравнение в вариациях:
+$$
+\dfrac{\d Y[t]}{\d t} = \dfrac{\d g(t, x[t])}{\d x} Y[t],
+$$
+начальное условие снова
+$$
+Y[t_0] = E.
+$$
+
+Помимо тех теорем, которые будут рассмотрены сегодня, существуют также и более общие, например, теорема Понтрягина о зависимости от параметра $\mu$, но они нам в курсе не понадобятся.
+
+\section{Непрерывность}
+%\begin{theorem}[О непрерывности]
+%Пусть $g(t,x)$ определена при п.\,в. $\dot{\forall} t \in [\tau_0, \tau_1]$, $\tau_0 < t_0 < t_1 < \tau_1$ и для всех $\forall x \in B_r(x^0)$. Пусть, кроме того, $g(t,x)$ измерима по $t$ для всех $\forall x \in B_r(x^0)$ и непрерывна по $x$ для п.\,в. $\dot{\forall} t \in [\tau_0, \tau_1]$.
+%
+%Пусть $x[t] = x(t, t_0, x^0)$ --- решение \eqref{eq:system}, $t \in [\tilde{\tau_0}, \tilde{\tau_1}]$, $\tau_0 \leqslant \tilde{\tau}_0 < t_0 < \tilde{\tau}_1 \leqslant \tau_1$, а $g(t,x)$ дополнительно удовлетворяет условиям существования и единственности решения \eqref{eq:system} (без продолжимости).
+%
+%Тогда $\exists \delta > 0$ такое, что если $\tau \in (\tilde{\tau}_0, \tilde{\tau}_1)$ и $\xi \in U_{\delta}(x[\tau])$ (т.\,е. $\norm{x[\tau] - \xi} \leqslant \delta$), то $\exists !$ решение задачи Коши:
+%$$
+%\left\{
+%\begin{aligned}
+%& \fot{\tilde{x}}(t) = g(t, \tilde{x}(t)), \\
+%& \tilde{x}[\tau] = \xi
+%\end{aligned}
+%\right.
+%$$
+%\end{theorem}
+
+Мы сформулируем частный случай теоремы о непрерывной зависимости.
+
+Будем предполагать, что
+$$
+g \colon [T_0, T_1] \times \R^n \to \R^n, \;\; -\infty \leqslant T_0 < T_1 \leqslant +\infty.
+$$
+
+Кроме того, мы будем накладывать на $g(t,x)$ следующие ограничения ($\star$):
+\begin{enumerate}
+\item $g(t,x)$ измерима по $t \in [T_0, T_1]$ для всех $\forall x \in \R^n$,\\
+	  $g(t,x)$ непрерывна по $x$ для п.~в. $\dot{\forall} t \in [T_0, T_1]$;
+\item $\exists L = const > 0$: $\norm{g(t, x') - g(t, x'')} \leqslant L \norm{x' - x''}$ для всех $\forall x', x'' \in \R^n$ и п.~в. $\dot{\forall} t \in [T_0, T_1]$;
+\item $\exists A, B = const, A > 0, B > 0$:\\
+	  $\norm{g(t,x)} \leqslant A \norm{x} + B$ для всех $\forall x \in \R^n$ и п.в. $\dot{\forall} t \in [T_0, T_1]$.
+\end{enumerate}
+
+Пусть $T_0 < \tau < T_1$. Мы будем рассмтривать чуть более общий вид системы:
+\begin{align}
+&\dot{x}(t) = g(t, x(t)), \label{eq:cont_eq1} \\
+&x(\tau) = \xi, \label{eq:cont_eq2}
+\end{align}
+где $\tau \in (T_0, T_1)$.
+
+\begin{define}
+Функция $y(\cdot)$ называется $\varepsilon$-решением \eqref{eq:cont_eq1}, если $y(\cdot) \in AC([\tau_0, \tau_1, \R^n])$ и $\norm{\dot{y}(t) - g(t, y(t))} \leqslant \varepsilon$ для п.\,в. $\dot{\forall} t \in [\tau_0, \tau_1]$.
+\end{define}
+
+\begin{lemma}
+Пусть $y^1(\cdot)$ --- $\varepsilon_1$-решение \eqref{eq:cont_eq1}, а $y^2(\cdot)$ --- $\varepsilon_2$-решение \eqref{eq:cont_eq1}, при этом $\varepsilon_1, \varepsilon_2 \geqslant 0$, $y^1, y^2$ определены на $[\tau_0, \tau_1]$, $T_0 < \tau_0 < \tau < \tau_1 < T_1$ и $\norm{y^1(\tau) - y^2(\tau)} \leqslant \delta$. Тогда 
+$$
+\norm{y^1(t) - y^2(t)} \leqslant \delta \e^{L \abs{t - \tau}} + \dfrac{\varepsilon}{L}\left( \e^{L \abs{t - \tau}} - 1 \right),
+$$
+где $\varepsilon = \varepsilon_1 + \varepsilon_2 \geqslant 0$, $\tau_0 < t < \tau_1$.
+\end{lemma}
+\begin{proof}
+Рассмотрим две функции
+$$
+z^j (t) = \dot{y}^j (t) - g(t, y^j (t));
+$$
+$\norm{z^j (t)} \leqslant \varepsilon_j$ для п.\,в. $\dot{\forall} t$.
+
+Очевидно, что $z^j(\cdot)$ --- измеримы. Имеем:
+$$
+y^j (t) - y^j(\tau) - \int\limits_{\tau}^{t} g(s, y^j(s)) ds = \int\limits_{\tau}^{t} z^j (s) ds.
+$$
+
+Вычтем одно равенство из другого:
+$$
+\left( y^1(t) - y^2(t) \right) - \left(y^1(\tau) - y^2(\tau)\right) -
+$$
+$$
+- \int\limits_{\tau}^{t}\left[ g(s, y^1(s)) - g(s, y^2(s)) \right] ds = \int\limits_{\tau}^{t} \left[ z^1(s) - z^2(s) \right] ds.
+$$
+
+Обозначим $\Delta y(t) = y^1(t) - y^2(t)$, $r(t) = \norm{\Delta y(t)}$, тогда
+\begin{equation}\label{eq:r_estimate}
+r(t) \leqslant r(\tau) + L \int\limits_{\min(t,\tau)}^{\max(t,\tau)} r(s) ds + \varepsilon\abs{t - \tau}.
+\end{equation}
+
+Не ограничивая общности, будем предполагать $t > \tau$. Обозначим $\dot{R}(t) = r(t)$, тогда, в силу условия $r(\tau) \leqslant \delta$, получим:
+$$
+\dot{R}(t) - LR(t) \leqslant \delta + \varepsilon (t - \tau).
+$$
+Домножая на $\e^{-Lt}$, получим
+$$
+\dfrac{d}{dt} \left( R \e^{-Lt} \right) \leqslant (\delta + \varepsilon(t - \tau))\e^{-Lt}.
+$$
+Проинтегрировав на отрезке времени от $\tau$ до $t$, получим
+$$
+R(t)\e^{-Lt} - R(\tau) \e^{-L\tau} \leqslant \dfrac{\delta}{L} \left( \e^{L\tau} - \e^{-Lt}\right) - \dfrac{\varepsilon \tau}{L} \left( \e^{-L\tau} - \e^{-Lt} \right) +
+$$
+$$
+\dfrac{\varepsilon}{L} \left( \tau \e^{-L\tau} - t\e^{-Lt} \right) + \dfrac{\varepsilon}{L^2} \left( \e^{-L\tau} - \e^{-Lt} \right).
+$$
+Домножим всё на $\e^{Lt}$, получим:
+$$
+R(t) \leqslant \dfrac{\delta}{L} \left( \e^{L(t - \tau)} - 1 \right) - \dfrac{\varepsilon}{L}(t - \tau) + \dfrac{\varepsilon}{L^2} \left( \e^{L(t - \tau)} - 1 \right).
+$$
+Это неравенство можно подставить в оценку \eqref{eq:r_estimate} (за $R(t)$ мы обозначили интеграл, стоящий справа от знака неравенства):
+$$
+r(t) \leqslant \delta + \delta \left( \e^{L(t - \tau)} - 1 \right) + \varepsilon \left( \dfrac{\e^{L(t - \tau} - 1}{L} - (t - \tau) + (t - \tau) \right).
+$$
+
+Приводя слагаемые, получим оценку из условия леммы.
+\end{proof}
+
+Рассмотрим $x(t, \tau, \xi)$ --- решение \eqref{eq:cont_eq1}, \eqref{eq:cont_eq2}.
+\begin{theorem}
+Пусть выполнены условия ($\star$). Тогда в области $(T_0, T_1)^2 \times \R^n$ решение $x(t, \tau, \xi)$ непрерывно.
+\end{theorem}
+\begin{proof}
+Обозначим $V = (T_0, T_1) ^ 2 \times \R^n$. Рассмотрим последовательность:
+$$
+x^{(0)}(t,\tau,\xi) = y[t] + \xi - y[\tau],
+$$
+где $y[t] = x(t, t_0, x^0)$ для некоторого $t_0$: $T_0 < t_0 < T_1$.
+$$
+y[t] = y[\tau] + \int\limits_{\tau}^{t} g(s, y[s]) ds.
+$$
+
+Для $k \in \N$ определим
+$$
+x^{(k)}(t, \tau, \xi) = \xi + \int\limits_{\tau}^{t} g(s, x^{(k-1)}(s, \tau, \xi)) ds.
+$$
+
+Тогда
+$$
+\norm{x^{(0)} (t, \tau, \xi) - y[t]} = \norm{\xi - y[\tau]},
+$$
+$$
+\norm{x^{(1)}(t, \tau, \xi) - x^{(0)}(t, \tau, \xi)} =
+$$
+$$
+= \norm{\int\limits_{\tau}^{t} \left[ g\left(s, x^{(0)}(s, \tau, \xi)\right) - g(s, y[s])) \right]} ds \leqslant
+$$
+$$
+\leqslant L \norm{\xi - y[\tau]} \abs{t - \tau}.
+$$
+
+Для произвольного $k \in \N$:
+$$
+\norm{ x^{(k+1)} (t, \tau, \xi) - x^{(k)} (t, \tau, \xi) } \leqslant \dfrac{L^ {k+1} \abs{t - \tau}^{k+1}}{(k+1)!} \norm{\xi - y[\tau]},
+$$
+т.~е.
+$$
+\norm{ x^{(k+1)} (t, \tau, \xi) - x^{(k)} (t, \tau, \xi) } \to 0
+$$
+при $k \to \infty$, причём равномерно на любом $\forall K$ --- компакте из $V$. Значит, $x^{(k)}$ равномерно сходится на нём (в силу сходимости в $C$).
+
+Тогда имеем:
+$$
+\norm{ x^{(k)}(t, \tau, \xi) - y[t]} \leqslant \norm{x^{(k)} (t, \tau, \xi) - x^{(k - 1)}(t, \tau, \xi)} +
+$$
+$$
++ \norm{ x^{(k-1)}(t, \tau, \xi) - y[t]} \leqslant \left\{ \text{ряд Тейлора} \right\} \leqslant \e^{L \abs{t - \tau}} \norm{\xi - y[\tau]}.
+$$
+
+Т.\,к. $x(t, \tau, \xi) = \xi + \int\limits_{\tau}^{t} g(s, x(s, \tau, \xi))ds$, то $$
+x^{(k)}(t, \tau, \xi) \rightrightarrows x(t, \tau, \xi), \; k \to \infty
+$$
+и выполняется оценка
+$$
+\norm{x(t, \tau, \xi) - y[t]} \leqslant \e^{L \abs{t - \tau}} \norm{\xi - y[\tau]}.
+$$
+
+Из непрерывности $y[t]$ (в силу ($\star$)) следует непрерывность $x^{(k)}(t, \tau, \xi)$, а значит, и непрерывность $x(t, \tau, \xi)$.
+\end{proof}
+
+\begin{corol}
+$x(t, \tau, \cdot)$ является гомеоморфизмом (топологическое отображение), т.~е. $x(t, \tau, \cdot) \colon \R^n \to \R^n$ взаимно однозначное, непрерывное и обратно непрерывное отображение:
+$$
+x^{-1}(t, \tau, \cdot) = x(\tau, t, \cdot).
+$$
+\end{corol}
+
+\begin{corol}
+$$
+\left\{
+\begin{aligned}
+& \dot{x}(t) = f(t, x(t), u(t)), \\
+& x(t_0) = x^0, \;\; u(t) \in \P(t).
+\end{aligned}
+\right.
+$$
+
+$\mathscr{X}[t] = \mathscr{X}(t, t_0, x^0)$. Тогда если $\xi \in int \mathscr{X}[\tau]$, то $\forall t > \tau$, $\forall u(\cdot)$ для $s \in [\tau, t]$
+$$
+x[s] = x(s, \tau, \xi \rvert u(\cdot)) \in int \mathscr{X}[s].
+$$
+\end{corol}
+
+\begin{remark}
+Если $\xi \in int \mathscr{X}[\tau]$, то некоторая окрестность $U_{\delta}(\xi) \subseteq \mathscr{X}[\tau]$. Возьмём $x \in U_{\delta}(\xi)$ и рассмотрим $y[s] = x(s, \tau, x \rvert u(\cdot))$ \textit{(управление $u(\cdot)$ такое же)}.
+$$
+\bigcup\limits_{x \in U_{\delta}(\xi)} \left\{ y[s] \right\} \subseteq \mathscr{X}[s]
+\thus
+x[s] \in int \bigcup\limits_{x \in U_{\delta}(\xi)} \left\{ y[s] \right\}.
+$$
+\end{remark}
+
+\begin{remark}
+Таким образом, если в нелинейной системе траектория движется по границе трубки достижимости и в какой-то момент <<проваливается>> внутрь неё, то снова оказаться на границе траектория не сможет. В соответствии с принципом максимума, такая траектория может уже не быть оптимальной, например, в задаче быстродействия. Отличие от линейных систем здесь в том, что для последних траектория уйти с границы не может.
+\end{remark}
+
+\section{Дифференцируемость}
+
+\begin{theorem}
+Пусть выполнены условия ($\star$) и, кроме того, производная $\dfrac{\d g}{\d x}$ существует для всех $\forall x \in \R^n, \; \dot{\forall} t \in [T_0, T_1]$, измерима по $t$, непрерывна по $x$, а также удовлетворяет следующему условию регулярности:\\
+пусть для любых $\forall \tau_0, \tau_1$: $T_0 < \tau_0 < \tau_1 < T_1$, для любых $\forall \varepsilon >0$, $\forall D \subseteq \R^n$, $D$ --- непустой компакт, существует $\exists \delta(\varepsilon, \tau_0, \tau_1, D) > 0$:
+$$
+\forall x', x'' \in D \colon \norm{x' - x''} \leqslant \delta, \forall t \in [\tau_0, \tau_1] \thus
+$$
+$$
+\norm{\dfrac{\d g}{\d x}(t, x') - \frac{\d g}{\d x}(t, x''))} \leqslant \varepsilon.
+$$
+
+Тогда $\exists \left. \dfrac{\d x(t, \tau, \xi))}{\d \xi} \right|_{(t, t_0, x^0)} = Y(t, \tau, \xi)$, $Y[\cdot] \in AC$, 
+удовлетворяющая уравнению в вариациях
+\begin{equation}\label{eq:variation_eq}
+\dot{Y}[t] = \dfrac{\d g(t, x(t, \tau, \xi))}{\d x} Y[t],
+\tag{УВ}
+\end{equation}
+$$
+Y[\tau] = E.
+$$
+\end{theorem}
+\begin{proof}
+Обозначим $y[t] = x(t, \tau, \xi^0)$. Зафиксируем $\forall h \in \R^n$  и рассмотрим $x_h[t] = x(t, \tau, \xi^0 + \alpha h)$. Обозначим норму разности этих решений
+$$
+\vartheta_h(t, \tau, \xi^0, \alpha) = x_h[t] - y[t].
+$$
+
+Существует ли $\lim\limits_{\alpha \to 0} \dfrac{\vartheta_h(t, \tau, \xi^0, \alpha)}{\alpha}$ (на некотором компакте $\abs{\alpha} \leqslant \alpha_0$)?
+Поскольку $y[t]$ и $x_h[t]$ являются решениями исходной системы, они также являются её $\varepsilon$-решениями с $\varepsilon = 0$. Мы можем применить лемму 1 для того, чтобы оценить $\vartheta_h$:
+$$
+\norm{\vartheta_h(t, \tau, \xi^0, \alpha)} \leqslant \abs{\alpha} \norm{h} \e^{L\abs{t - \tau}} \To\limits_{\alpha \to 0} 0,
+$$
+причём сходимость равномерна по $(t, \tau, \xi)$ в пределах произвольного компакта.
+
+Теперь продифференцируем $\vartheta_h$ по времени. Для п.~в. $\dot{\forall} t$:
+$$
+\dfrac{d \vartheta_h(t, \tau, \xi^0, \alpha)}{dt} = g(t, x_h[t]) - g(t, y[t]) = 
+$$
+$$
+= \left\{ \text{ф-ла конечных приращений} \right\} =
+$$
+$$
+\left[ \dfrac{\d g}{\d x}(t, y[t] + \beta(t)(x_h[t] - y[t])) \right] \vartheta_h(t, \tau, \xi^0, \alpha) = **
+$$
+
+Пусть $\tau_0, \tau_1$: $T_0 < \tau_0 < \tau_1 < T_1$ и $D \in \R^n$, $D$ --- компакт, таковы, что $\forall t \in [\tau_0, \tau_1]$, $\forall \beta \in [0,1]$, $\forall \tau \in [\tau_0, \tau_1]$ и \\ $\forall \alpha \colon \abs{\alpha} \leqslant \alpha_0$ $\thus y[t] + \beta \vartheta_h(t, \tau, \xi^0, \alpha) \in D$. \textit{Это возможно ввиду ограниченности $y[t]$ и полученной оценки на $\vartheta_h$}.
+
+Из условия регулярности на $g$:
+$$
+\forall \varepsilon > 0 \; \exists \delta = \delta(\varepsilon, \tau_0, \tau_1, D) > 0 \colon
+$$
+$$
+\norm{\dfrac{\d g(t, y[t])}{\d x} - \dfrac{\d g(t, y[t] + \beta[t] \vartheta_h)}{\d x}} \leqslant \varepsilon \text{ при } \norm{\vartheta_h} \leqslant \delta.
+$$
+Обозначим разность производных, стоящих под знаком нормы, за $-\Gamma$.
+
+Тогда
+$$
+** = \left[ \dfrac{\d g}{\d x}(t, y[t]) + \Gamma \right] \vartheta_h(t, \tau, \xi^0, \alpha) =
+$$
+$$
+ = \left\{ \gamma \colon \alpha \gamma = \Gamma \vartheta_h \thus \norm{\gamma} \leqslant \norm{\Gamma} \norm{h} \e^{L \abs{t - \tau}} \right\} =
+$$
+$$
+= \dfrac{\d g}{\d x}(t, y[t])\vartheta_h(t, \tau, \xi^0, \alpha) + \gamma \alpha.
+$$
+
+Введём новую функцию $\chi_h(t, \tau, \xi^0, \alpha) = \dfrac{\vartheta_h(t, \tau, \xi^0, \alpha)}{\alpha}$. 
+$$
+\dfrac{\d \chi}{\d t}(t, \tau, \xi^0, \alpha) = \dfrac{\d g}{\d x}(t, y[t])\chi_h(t, \tau, \xi^0, \alpha) + \gamma,
+$$
+т.~е. $\chi_h$ - это $\tilde{\varepsilon}$-решение уравнения \eqref{eq:variation_eq}
+$$
+\dot{z}[t] = \dfrac{\d g}{\d x} (t, y[t])z[t]
+$$
+с $\norm{\gamma} \leqslant \tilde{\varepsilon}$. Покажем, что это действительно так.
+
+Пусть $\psi_h[\cdot] = \psi_h(\cdot, \tau)$ --- истинное решение \eqref{eq:variation_eq} с начальным условием $\psi_h[\tau] = h$.
+Заметим, что
+$$
+\chi_h(\tau, \tau, \xi^0, \alpha) = \dfrac{x_h[\tau] - y[\tau]}{\alpha} = \dfrac{\xi^0 + \alpha h - \xi^0}{\alpha} = h,
+$$
+тогда
+$$
+\norm{\chi_h(\tau, \tau, \xi^0, \alpha) - \psi_h(\tau, \tau)} = 0.
+$$
+Применим лемму 1 к \eqref{eq:variation_eq}: при $\delta = 0$, $\varepsilon_1 = \tilde{\varepsilon}$, $\varepsilon_2 = 0$ (т.~е. $\varepsilon = \varepsilon_1 + \varepsilon_2 = \tilde{\varepsilon}$) справедлива оценка
+$$
+\norm{\chi_h(t, \tau, \xi^0, \alpha) - \psi_h(t, \tau)} \leqslant \dfrac{\tilde{\varepsilon}}{L} \left( \e^{L \abs{t - \tau}} - 1 \right) < \varepsilon^0.
+$$
+\textit{Это верно при $\abs{\alpha} \leqslant \alpha_0$}.
+
+Двигаясь по цепочке $\varepsilon^0 \to \tilde{\varepsilon} \to \varepsilon \to \delta$, возспользуемся оценкой
+$$
+\norm{\vartheta_h} \leqslant \abs{\alpha} \norm{h} \e^{L\abs{t - \tau}}
+$$
+для получения
+$$
+\forall \varepsilon^0 > 0 \exists \tilde{\alpha} > 0 \colon \abs{\alpha} \leqslant \tilde{\alpha} \thus \norm{\vartheta_h} \leqslant \delta.
+$$
+
+Это значит, что
+$$
+\chi_h \rightrightarrows \psi_h \text{ при } \alpha \to 0
+$$
+на компакте $K = [\tau_0, \tau_1]^2$. Значит, существует искомый предел.
+
+$\lim \chi_h$ --- производная по направлению $h$. Чтобы получить итоговое $Y[\cdot]$, найдём $\dfrac{\d x}{\d \xi_1}, \ldots, \dfrac{\d x}{\d \xi_n}$ \textit{(по стандартному ОНБ)}, и положим столбцы $Y$ равными этим частым производным. Тогда $Y[t]$ будет удовлетворяться матричному \eqref{eq:variation_eq} и начальному условию $T[\tau] = E$.
+\end{proof}
+
+\begin{corol}
+Чувствительность к вариации в начале:
+$$
+x(t, \tau, \xi) = x(t, \tau, \xi^0) + Y(t, \tau, \xi^0)(\xi - \xi^0) + \bar{o}(\norm{\xi - \xi^0}).
+$$
+\end{corol}
+
+\begin{corol}
+Когда выполнено условие регулярности из последней теоремы?\\
+\textbf{Ответ:} когда $\dfrac{\d f}{\d x}(t,x,u)$ непрерывна по $(t,x,u)$.
+
+Поскольку $y(\cdot) \in L_{\infty}$, $\norm{u(\cdot)} \leqslant C$.
+$\forall D \subset \R^n$, $D$ --- компакт, $\forall [\tau_0, \tau_1] \thus K = [\tau_0, \tau_1] \times D \times B_C(0)$ следует, что $\dfrac{\d f}{\d x}$ равномерно непрерывна на $K$ (теорема Кантора), значит
+$$
+\forall \varepsilon > 0 \exists \delta > 0 : \forall x', x'' \colon \norm{x' - x''} \leqslant \delta \thus
+$$
+$$
+\thus \norm{ \dfrac{\d f}{\d x}(t, x', u) - \dfrac{\d f}{\d x}(t, x'', u) } \leqslant \varepsilon, \;\;\; \forall t \in [\tau_0, \tau_1], \forall u \in B_C(0).
+$$
+\end{corol}
+
+\begin{corol}
+Применение теоремы: $\psi$ --- внешняя нормаль к $\d \mathscr{X}[t]$.
+\end{corol}
+
+\end{document}

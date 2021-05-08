@@ -1,0 +1,170 @@
+\documentclass[12pt, a4paper]{article}
+
+%\usepackage[cp1251]{inputenc}
+\usepackage{a4wide} % уменьшает поля
+\textwidth=12cm
+
+\usepackage{background}
+\SetBgScale{1}
+\SetBgAngle{0}
+\SetBgColor{black}
+\SetBgContents{\rule{.4pt}{\paperheight}}
+\SetBgHshift{5cm}
+
+\usepackage{bm}
+
+\usepackage[utf8]{inputenc}
+\usepackage[russian]{babel} % включает русский язык
+\usepackage{graphicx} % позволяет подключить .eps - файлы
+\usepackage{amsmath}
+\usepackage{amsthm} % теоремы от AMS
+\usepackage{amssymb} % для работы с математическими R и проч.
+\usepackage{floatrow}
+\usepackage{mathrsfs}
+
+\usepackage{accents}
+\newcommand{\ubar}[1]{\underaccent{\bar}{#1}}
+
+\newtheoremstyle{rusdef}
+  {3pt}% measure of space to leave above the theorem. E.g.: 3pt
+  {3pt}% measure of space to leave below the theorem. E.g.: 3pt
+  {\itshape}% name of font to use in the body of the theorem
+  {\parindent}% measure of space to indent
+  {\bfseries}% name of head font
+  {.}%
+  {.5em}%
+  {}
+
+\theoremstyle{rusdef}
+\newtheorem{definition}{Определение} % определение по-русски
+\newtheorem{theorem}{Теорема}
+\newtheorem{proposition}{Предложение}
+\renewcommand\qedsymbol{$\blacksquare$}
+\newtheorem{statement}{Утверждение}
+\newtheorem{remark}{Замечание}
+\newtheorem{lemma}{Лемма}
+\newtheorem{corollary}{Следствие}
+\newtheorem{assumption}{Предположение}
+\newtheorem{example}{Пример}
+\newtheorem{exersize}{Упражнение}
+
+\newcommand\abs[1]{\left\lvert #1 \right\rvert} % модуль
+\newcommand\bracket[1]{\left( #1 \right)} % скобки
+\newcommand\scalar[1]{\left < #1 \right >} % скалярное произведение
+\newcommand{\R}{\ensuremath{\mathbb{R}}} % R - мн-во вещественных чисел
+\newcommand{\N}{\ensuremath{\mathbb{N}}} % N - мн-во натуральных чисел
+\newcommand{\X}{\mathscr{X}} % красивая Х для начального и конечного множеств
+\renewcommand{\P}{\mathscr{P}} % красивая P для ограничений на управление
+\newcommand{\then}{\Rightarrow}
+\newcommand{\h}{\mathbb{h}}
+\newcommand{\e}{\mathbf{e}}
+
+\renewcommand{\H}{\mathcal{H}} % красивая H для Гамильтона-Понтрягина
+\newcommand{\M}{\mathcal{M}} % красивая M для Максимума
+\renewcommand{\L}{\mathscr{L}} % красивая L для Лагранжа
+\renewcommand{\d}{\partial} % чтобы долго не писать частную производную
+\newcommand{\norm}[1]{\left\lVert #1 \right\rVert} % норма
+\DeclareMathOperator*{\thus}{\Rightarrow} % следствие с возможностью использовать limits
+\DeclareMathOperator*{\To}{\longrightarrow}
+\DeclareMathOperator*{\Argmax}{Argmax} % Argmax с возмножностью использовать limits
+
+\usepackage{indentfirst} % абзац после заголовка
+
+\begin{document}
+
+\parbox{11.8cm}{
+  \begin{center}
+    {\Huge Теорема о нулях $x_2$ и $\psi_2$}
+  \end{center}
+}
+
+\begin{theorem}
+  Пусть $\tau_1 < \tau_2$. Тогда
+  \begin{enumerate}
+    \item если $\psi_2(\tau_1) = \psi_2(\tau_2) = 0$ и $x_2(\tau_1) = 0$, то $x_2(\tau_2) = 0$;
+    \item если $x_2(\tau_1) = x_2(\tau_2) = 0$, ${x_2(t) \neq 0}$ при ${t \in (\tau_1, \tau_2)}$ и ${\psi_2(\tau_1) = 0}$, то $\psi_2(\tau_2) = 0$;
+    \item если $\psi_2(\tau_1) = \psi_2(\tau_2) = 0$ и $x_2(\tau_1) \neq 0$, то $x_2(\tau_2) \neq 0$ и $\exists t' \in (\tau_1, \tau_2)\colon$ $x_2(\tau') = 0$;
+    \item если $x_2(\tau_1) = x_2(\tau_2) = 0$, ${x_2(t) \neq 0}$ при ${t \in (\tau_1, \tau_2)}$ и ${\psi_2(\tau_1) \neq 0}$, то $\psi_2(\tau_2) \neq 0$ и $\exists t' \in (\tau_1, \tau_2)\colon$ $\psi_2(\tau') = 0$.
+  \end{enumerate}
+\end{theorem}
+\begin{proof}
+  Докажем все пункты по очереди.
+  \begin{enumerate}
+    \item[1)] Поскольку $\mathscr{M}|_{t=\tau_1} = \mathscr{M}|_{t=\tau_2}$ из ПМП, то
+    $$
+      0 = \psi_1(\tau_1) x_2(\tau_1) = \mathscr{M}|_{t=\tau_1} = \mathscr{M}|_{t=\tau_2} = \psi_1(\tau_2) x_2(\tau_2).
+    $$
+    Поскольку $\psi_1(\tau_2) \neq 0$ в силу (УН), следовательно, $x_2(\tau_2) = 0$.
+    
+    \item[3)] Аналогично предыдущему пункту: $\psi_1(\tau_1) \neq 0$, $\psi_1(\tau_2) \neq 0$ в силу (УН), и
+    $$
+      0 \neq \psi_1(\tau_1) x_2(\tau_1) = \mathscr{M}|_{t=\tau_1} = \mathscr{M}|_{t=\tau_2} = \psi_1(\tau_2) x_2(\tau_2).
+    $$
+    Отсюда $x_2(\tau_2) \neq 0$. Покажем теперь, что в некоторой промежуточной точке $x_2(t') = 0$.
+    Без ограничения общности будем считать, что $\tau_1$ и $\tau_2$ --- два последовательных нуля $\psi_2(\cdot)$, и $\psi_2(t) \neq 0$ при $t \in (\tau_1, \tau_2)$.
+    Поскольку $\dot{\psi}_2(\tau_j) = -\psi_1(\tau_j) \neq 0$, то 
+    %% (TODO: картинка с лекции)
+    $$
+      \psi_1(\tau_1) \psi_1(\tau_2) < 0.
+    $$
+    Тогда из равенства $\psi_1(\tau_1) x_2(\tau_1) = \psi_1(\tau_2) x_2(\tau_2)$ следует, что
+    $$
+      x_2(\tau_1) x_2(\tau_2) < 0,
+    $$
+    что, в силу непрерывности функции $x_2(\cdot)$, означает, что $\exists t' \in (\tau_1, \tau_2)\colon$ $x_2(t') = 0$.
+    \item[2)] Рассмотрим функцию $K(t) = \psi_1(t) x_2(t) + \psi_2(t) \dfrac{dx_2(t)}{dt}$, определённую всюду вне моментов переключений (если $t_0$ --- момент переключения, то производная $\dfrac{dx_2(t)}{dt}$ может иметь разрыв I-го рода). Более того, эта функция будет кусочно-непрерывной.
+    Если $t_0$ --- момент переключения, то определены $K(t_0+0)$ и $K(t_0-0)$. Покажем, что $K \equiv const$ (при доопределении в моментах переключений).
+
+    Пусть $\tau$ --- точка непрерывности $K$, тогда при $t \in U_{\delta}(\tau)$:
+    $$
+      \dfrac{dK}{dt} = \psi_2 \dfrac{\d f}{\d x_1} x_2 + \psi_1(-f + u) + \psi_2 \dfrac{\d f}{\d x_2} \dfrac{dx_2}{dt} - \psi_1 \dfrac{dx_2}{dt} + \psi_2 \dfrac{d^2 x_2}{dt^2}.
+    $$
+    При этом
+    $$
+      \psi_2 \dfrac{d^2 x_2}{dt^2} = \psi_2 \left( \dfrac{\d f}{\d x_1} x_2 - \dfrac{\d f}{\d x_2}(-f + u) \right).
+    $$
+    Объединяя два последних равенства, сократим все слагаемые и получим $\dfrac{dK}{dt} = 0$.
+
+    Пусть теперь $t_0$ --- момент переключения, тогда из ПМП $\psi_2(t_0) = 0$, и
+    $$
+      K(t_0 \pm 0) = \psi_1(t_0) x_2(t_0) \thus K(t_0 + 0) = K(t_0 - 0), 
+    $$
+    то есть $K(\cdot)$ непрерывна в $t_0$.
+
+    Тогда доопределим $K$ во всех точках переключений и получим, что $K(t) \equiv const$.
+    Тогда ($\psi_2(\tau_1) = 0$):
+    $$
+      0 = \psi_2(\tau_1) \dfrac{dx_2(\tau_1 \pm 0)}{dt} = K(\tau_1) = K(\tau_2) = \psi_2(\tau_2) \dfrac{dx_2(\tau_2 \pm 0)}{dt}.
+    $$
+    Предположим противное: пусть $\psi_2(\tau_2) \neq 0$, тогда $\dfrac{dx_2(\tau_2)}{dt} = 0$. Но по условию у нас $x_2(\tau_2)$, и $u(t) \equiv const$ при $t \in U_{\delta}(\tau_2)$. Таким образом, получаем, что $(x_1(\tau_2), x_2(\tau_2))$ --- стационарная точка системы
+    $$
+      \left\{
+        \begin{aligned}
+          & \dot{x}_1 = x_2, \\
+          & \dot{x}_2 = -f(x_1, x_2) + u.
+        \end{aligned}
+      \right.
+    $$
+    В силу единственности решения получаем, что $x_1(t) \equiv const$, $x_2(t) \equiv const$ при $t \in U_{\delta}(\tau_2)$, что противоречит условию $x_2(t) \neq 0$ при $t \in (\tau_1, \tau_2)$.
+
+    Это противоречие приводит нас к тому, что $\psi_2(\tau_2) = 0$.
+    \item[4)] По аналогии с 2) через противоречие со стационарной точкой получаем, что при $t \in (\tau_1, \tau_2)$
+    $$
+        (x_2(t))^2 + \left( \dfrac{dx_2(t \pm 0)}{dt} \right)^2 \neq 0.
+    $$
+    Тогда 
+    $$
+      0 \neq \psi_2(\tau_1) \dfrac{dx_2(\tau_1 \pm 0)}{dt} = K(\tau_1) = K(\tau_2) = \psi_2(\tau_2) \dfrac{dx_2(\tau_2 \pm 0)}{dt},
+    $$
+    то есть $\psi_2(\tau_2) \neq 0$.
+
+    Покажем, что $\exists t' \colon \psi_2(t') = 0$. Предположим противное: пусть $sgn \psi_2(t) \equiv const, t \in [\tau_1, \tau_2]$. Тогда
+    $$
+        \dfrac{dx_2(\tau_1)}{dt} \dfrac{dx_2(\tau_2)}{dt} > 0,
+    $$
+    что противоречит (по аналогии с 3)) той части условия 4), в которой говорится, что $\tau_1$ и $\tau_2$ --- последовательные обособленные нули $x_2$.
+  \end{enumerate}
+  Теорема доказана.
+\end{proof}
+
+\end{document}

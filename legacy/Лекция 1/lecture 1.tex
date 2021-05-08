@@ -1,0 +1,511 @@
+\documentclass[12pt, a4paper]{article}
+
+
+
+%\usepackage[cp1251]{inputenc}
+\usepackage{a4wide} % уменьшает поля
+\textwidth=11.5cm
+
+\usepackage[utf8]{inputenc}
+\usepackage[russian]{babel} % включает русский язык
+\usepackage{graphicx} % позволяет подключить .eps - файлы
+\usepackage{amsmath}
+\usepackage{amsthm} % теоремы от AMS
+\usepackage{amssymb} % для работы с математическими R и проч.
+\usepackage{floatrow}
+\usepackage{mathrsfs}
+\usepackage{mathtools} % содержит \coloneqq -- присванивание
+
+\usepackage{accents}
+\newcommand{\ubar}[1]{\underaccent{\bar}{#1}}
+
+\usepackage[usenames]{color} % чтобы цвета в hyperref понимались
+\usepackage{ulem} % дает зачеркнутый текст по \sout
+\usepackage[unicode,
+			breaklinks,colorlinks,
+			linkcolor=Black,
+			citecolor=Black,
+			hyperfootnotes=false]
+			{hyperref} % кликабельное оглавление без кликабельных футноутов
+
+
+\newtheoremstyle{rusdef}
+  {3pt}% measure of space to leave above the theorem. E.g.: 3pt
+  {3pt}% measure of space to leave below the theorem. E.g.: 3pt
+  {\itshape}% name of font to use in the body of the theorem
+  {\parindent}% measure of space to indent
+  {\bfseries}% name of head font
+  {.}%
+  {.5em}%
+  {}
+   
+
+\theoremstyle{rusdef}
+\newtheorem{define}{Определение} % определение по-русски
+\newtheorem{theorem}{Теорема}
+\newtheorem{prop}{Предложение}
+\renewcommand\qedsymbol{$\blacksquare$}
+\newtheorem{statement}{Утверждение}
+\newtheorem{remark}{Замечание}
+\newtheorem{lemma}{Лемма}
+\newtheorem{corol}{Следствие}
+\newtheorem{assume}{Предположение}
+\newtheorem{example}{Пример}
+
+\newcommand\abs[1]{\left\lvert #1 \right\rvert} % модуль
+\newcommand\bracket[1]{\left( #1 \right)} % скобки
+\newcommand\scalar[1]{\left < #1 \right >} % скалярное произведение
+\newcommand{\R}{\ensuremath{\mathbb{R}}} % R - мн-во вещественных чисел
+\newcommand{\N}{\ensuremath{\mathbb{N}}} % N - мн-во натуральных чисел
+\newcommand{\X}{\mathscr{X}} % красивая Х для начального и конечного множеств
+\renewcommand{\P}{\mathscr{P}} % красивая P для ограничений на управление
+\newcommand{\then}{\Rightarrow}
+\newcommand{\h}{\mathbb{h}}
+
+\renewcommand{\H}{\mathcal{H}} % красивая H для Гамильтона-Понтрягина
+\renewcommand{\d}{\partial} % чтобы долго не писать частную производную
+\newcommand{\norm}[1]{\left\lVert #1 \right\rVert} % норма
+\DeclareMathOperator*{\thus}{\Rightarrow} % следствие с возможностью использовать limits
+\DeclareMathOperator*{\Argmax}{Argmax} % Argmax с возмножностью использовать limits
+
+\usepackage{indentfirst} % абзац после заголовка
+
+\DeclareMathOperator{\sgn}{sgn} % сигнум
+\DeclareMathOperator{\rank}{rank} % ранг
+
+\newif\ifproofs
+\proofstrue % or
+%\proofsfalse
+
+\newif\iflotov
+\lotovtrue
+%\lotovfalse
+
+\newif\ifnewpages
+%\newpagestrue
+\newpagesfalse
+
+\newif\iftexts
+\textstrue
+%\textsfalse
+
+\begin{document}
+
+\begin{center}
+{\Huge \textbf{Решение по Каратеодори}}
+\end{center}
+
+Рассмотрим систему, движение которой задаётся дифференциальным уравнением
+$$
+\dot{x}(t) = f(t, x(t), u(t)).
+$$
+В каком смысле следует понимать траекторию $x(\cdot)$, управление $u(\cdot)$ --- всего лишь измеримая функция? Какие условия при этом необходимо наложить на $f$ и $x$?
+
+Ответу на эти вопросы посвящено это занятие.
+
+Для удобства введем дополнительное обозначение:
+$$
+g(t,x) = f(t,x,u(t)),
+$$
+<<спрятав>> таким образом управление внутрь функции $g(t,x)$.
+
+\section*{Условия Каратеодори}
+Пусть $(t_0, x^0) \in \R \times \R^n$ и $\exists a>0, r>0$ такие, что:
+\begin{enumerate}
+\item $g(t,x)$ определена для всех $\forall x \in B_r(x^0)$ и почти всех $\dot{\forall} t \in [t_0 - a, t_0 + a]$;
+\item $g(t,x)$ измерима по $t$ для всех $\forall x \in B_r(x^0)$, \\
+      $g(t,x)$ непрерывна по $x$ для поти всех $\dot{\forall} t \in [t_0 - a, t_0 + a]$;
+\item $\exists m(\cdot)$ - интегрируемая по Лебегу при $t \in [t_0 - a, t_0 + a]$ такая, что:
+$$
+\norm{g(t,x)} \leqslant m(t), \;\; \forall x \in B_r(x^0), \dot{\forall} t \in [t_0 - a, t_0 + a].
+$$
+\end{enumerate}
+Эти три условия и называются \textit{условиями Каратеодори}
+
+\section*{Абсолютно непрерывные функции}
+Итак, мы хотели бы найти решение задачи Коши
+\begin{equation}\label{eq:system dotx equal g(t,x(t))}
+\left\{
+\begin{aligned}
+& \dot{x}(t) = g(t, x(t)),\\
+& x(t_0) = x^0,
+\end{aligned}
+\right.
+\end{equation}
+в следующем классе функций:
+\begin{enumerate}
+\item $x(\cdot) \in C$;
+\item для почти всех $\dot{\forall} t$ существует $\exists \dot{x}$;
+\item для почти всех $\dot{\forall} t$ выполнено $\dot{x}(t) = g(t,x(t))$.
+\end{enumerate}
+
+Покажем, что условий Каратеодори самих по себе недостаточно для определения решения. Рассмотрим следующий тривиальный пример:
+$$
+\left\{
+\begin{aligned}
+& \dot{x} = 0,\\
+& x(0) = 0.
+\end{aligned}
+\right.
+$$
+Очевидно, решением этой системы будет $x \equiv 0$. Но такое решение в рассматриваемом классе не единственно. \textit{Канторова лестница} также будет являться решением этой системы при всех наложенных ограничениях (если это не очевидно, значит, это \textit{УПРАЖНЕНИЕ}).
+
+Чтобы избежать возникновения подобных артефактов в решениях дифференциальных уравнений, наложим дополнительное условие на $x$:
+\begin{center}
+$x(\cdot)$ --- решение \eqref{eq:system dotx equal g(t,x(t))} $\Leftrightarrow$ для всех $\forall t$ выполнено
+$$
+x(t) = x^0 + \int\limits_{t_0}^{t} g(\tau, x(\tau)) d\tau.
+$$
+\end{center}
+
+Известно, что если $z(\cdot)$ --- измерима, то для любого $\forall \varepsilon > 0$ существует $\exists \delta(\varepsilon) > 0$:
+$$
+\forall Z \colon \mu{Z} \leqslant \delta \Rightarrow \abs{\int\limits_{\tau \in Z} z(\tau) d\tau} \leqslant \varepsilon,
+$$
+что означает абсолютную непрерывность интеграла Лебега. Тогда мы можем заменить условие 3) в условиях Каратеодори на следующие два:
+\begin{enumerate}
+\item[3')] $\dot{x}$ --- интегрируема по Лебегу;
+\item[4)] для всех $\forall t \in [t_0 - a, t_0 + a] \Rightarrow x(t) = x^0 + \int\limits_{t_0}^{t} \dot{x}(\tau) d\tau$.
+\end{enumerate}
+
+\begin{define}
+Функций, удовлетворяющие условиям 1), 2), 3') и 4), будем называть \textbf{абсолютно непрерывными}, а класс таких функций обозначать $AC[t_0 - a, t_0 + a]$.
+\end{define}
+
+Класс абсолютно непрерывных функций можно определить иначе.
+
+\begin{define}
+Будем говорить, что $x(\cdot) \in AC[\tau_0, \tau_1]$, если для любого $\forall \varepsilon > 0$ существует $\exists \delta(\varepsilon) > 0 \colon$ $\forall \tau_1', \ldots, \tau_k'$, $\tau_1'', \ldots, \tau_k''$ таких, что $\tau_0 \leqslant \tau_1' \leqslant \tau_1'' \leqslant \ldots \leqslant \tau_k' \leqslant \tau_k'' \leqslant \tau_1$ выполнено:
+$$
+\sum\limits_{j = 1}^{k} \abs{\tau_j'' - \tau_j'} \\leqslant \delta \Rightarrow \sum\limits_{j=1}^{k} \norm{x(\tau_j'') - x(\tau_j')} \leqslant \varepsilon.
+$$
+\end{define}
+
+\begin{statement}
+Определения 1 и 2 эквиваленты
+\end{statement}
+\begin{proof}
+\textit{УПРАЖНЕНИЕ}
+\end{proof}
+
+\begin{remark}
+Абсолютно непрерывные функции являются непрерывными и равномерно непрерывными, но при этом не обязаны быть дифференцируемыми. В качестве примера можно рассмотреть одномерную функцию $f(x) = \abs{x}$.
+\end{remark}
+
+\begin{remark}
+$$
+Lip[\tau_0, \tau_1] \subseteq AC[\tau_0, \tau_1],
+$$
+поскольку
+$$
+\norm{x(\tau'') - x(\tau')} \leqslant L \abs{\tau'' - \tau'} \Rightarrow \delta(\varepsilon) = \frac{\varepsilon}{L}.
+$$
+\end{remark}
+
+\begin{statement}
+Вложение является строгим:
+$$
+Lip[\tau_0, \tau_1] \subset AC[\tau_0, \tau_1].
+$$
+\end{statement}
+\begin{proof}
+\textit{УПРАЖНЕНИЕ}\\
+Подсказка: рассмотреть функцию $x(t) = t^{\alpha}, 0 < \alpha < 1$.
+\end{proof}
+
+\begin{define}
+Решением системы \eqref{eq:system dotx equal g(t,x(t))} на $t_0 - a \leqslant \tau_0 < \tau_1 \leqslant t_0 + a$, $t_0 \in [\tau_0, \tau_1]$ по Каратеодори называется функция $x(\cdot)$, удовлетворяющая следующим критериям:
+\begin{enumerate}
+\item $x(\cdot) \in AC[\tau_0, \tau_1]$;
+\item $x(t_0) = x^0$;
+\item для почти всех $\dot{\forall} t \in (\tau_0, \tau_1) \Rightarrow \dot{x}(t) = g(t, x(t))$.
+\end{enumerate}
+\end{define}
+
+\subsection*{Существование решения по Каратеодори}
+Для доказательства основной теоремы нам потребуется сформулировать несколько вспомогательных теорем.
+
+\begin{theorem}[Scorza Dragoni G., 1948]
+Пусть $g(t,x)$ --- измерима по $t$ для всех $\forall x \in B_r(x^0)$ и непрерывна по $x$ для почти всех $\dot{\forall} t \in [\tau_0, \tau_1]$. Тогда $\forall \varepsilon >0 \Rightarrow \exists K \subseteq [\tau_0, \tau_1]$, $K$ --- компакт, такой, что
+$$
+\mu ([\tau_0, \tau_1] \setminus K) \leqslant \varepsilon
+$$
+и $g \rvert_{K \times B_r(x^0)}$ --- непрерывна по $(t,x)$.
+\end{theorem}
+\begin{theorem}[Критерий измеримости Лузина]
+Функция $z(t)$ --- измерима на $t \in[\tau_0, \tau_1]$ $\Leftrightarrow$ $\forall\,\varepsilon > 0 \;\; \exists K \subseteq [\tau_0, \tau_1]$, $K$ --- компакт, такой, что
+$$
+\mu([\tau_0,\ \tau_1] \setminus K) \leqslant \varepsilon
+$$
+и $z \rvert_{K}$ --- непрерывна.
+\end{theorem}
+
+\begin{remark}
+Из теоремы Лузина следует, что для $g(t,x)$ существует $K(x)$, а из Scorza Dragoni следует существование универсального $K$ (на шаре).
+\end{remark}
+
+\begin{corol}[Частный случай Scorza Dragoni]
+Если $g(t,x)$ --- измерима по $t$ для всех $\forall x$, непрерывна по $x$ для почти всех $\dot{\forall} t$, а $x(\cdot)$ --- измерима, то функция $g(t, x(t))$ -- измерима по $t$.
+\end{corol}
+\begin{proof}
+Функция $u(\cdot)$ --- измерима, следовательно, из критерия Лузина $\forall \varepsilon > 0 \;\; \exists K \subseteq [t_0 - h, t_0 + h]$, $K$ --- компакт:
+$$
+\mu([\tau_0,\ \tau_1] \setminus K) \leqslant \varepsilon
+$$
+и $u \rvert_{K}$ --- непрерывна. Тогда
+$$
+z(\tau) = g(\tau, x^{(k)}(\tau)) = f(\tau, x^{(k)}(\tau), u(\tau))
+$$
+непрерывна на $K$, а значит, $z(\cdot)$ --- измерима.
+\end{proof}
+
+Теперь мы можем сформулировать основную теорему.
+
+\begin{theorem}[Существование решения \eqref{eq:system dotx equal g(t,x(t))}]
+Пусть $0 < h \leqslant a$ и
+$$
+\int\limits_{t_0}^{t_0 + h} m(\tau) d\tau \leqslant r, \int\limits_{t_0 - h}^{t_0} m(\tau) d\tau \leqslant r.
+$$
+Тогда существует $\exists x(\cdot) \in AC[t_0 - h, t_0 + h]$ --- решение по Каратеодори системы \eqref{eq:system dotx equal g(t,x(t))}.
+\end{theorem}
+\begin{proof}
+Выпишем следующую последовательность функций:
+$$
+x^{(0)}(t) \equiv x^0,
+$$
+$$
+x^{(k+1)}(t) = x^0 + \int\limits_{t_0}^{t} g(\tau, x^{(k)}(\tau)) d\tau.
+$$
+
+Элементы этой последовательности определены корректно, поскольку $g(\tau, x^{(k)}(\tau))$ измеримы по $\tau$ в силу Следствия 1, ограничены интегрируемой функцией $m(t)$ (по условию теоремы) и, следовательно, интегрируемы по Лебегу. При этом $x^{(k)}(\cdot) \in C$ (более того, $x^{(k)}(\cdot) \in AC$).
+
+Для того, чтобы воспользоваться теоремой Арцела-Асколи, нам необходимо показать равностепенную непрерывность и равномерную ограниченность последовательности.
+
+Равномерная ограниченность (при $t \geqslant t_0$, для $t \leqslant t_0$ --- аналогично):
+$$
+\norm{x^{(k+1)}(t) - x^0} \leqslant \int\limits_{t_0}^{t} \norm{g(\tau, x^{(k)}(\tau))} d\tau \leqslant \int\limits_{t_0}^{t} m(\tau) d\tau \leqslant r.
+$$
+
+Равностепенная непрерывность:
+$$
+\forall \varepsilon >0 \; \exists \delta(\varepsilon) > 0 \colon \forall t', t'' \in [t_0 - h, t_0 + h], t' \leqslant t'' \colon \abs{t' - t''} \leqslant \delta
+$$
+$$
+\forall n \in \N \Rightarrow \norm{ x^{(n)}(t'') - x^{(n)}(t')} \leqslant \varepsilon?
+$$
+Для нашей последовательности
+$$
+\norm{ x^{(n)}(t'') - x^{(n)}(t')} = \norm{\int\limits_{t'}^{t''} g(s, x^{(n-1)}(s))ds} \leqslant\int\limits_{t'}^{t''} m(s) ds \leqslant \varepsilon
+$$
+в силу абсолютной непрерывности интеграла Лебега.
+
+Тогда последовательность непрерывных функций $\left\{ x^{(k)}(\cdot) \right\}$ равностепенно непрерывно и равномерно ограничено и, в силу теоремы Арцела-Асколи,
+$$
+x^{(k)} \rightrightarrows x(\cdot).
+$$
+
+При этом
+$$
+\norm{x^{(k)}(\cdot) - x(\cdot)}_C = \max\limits_{t \in [t_0 - h, t_0 + h]} \norm{x^{(k)}(t) - x(t)},
+$$
+то есть сходимость в $C$ аналогична равномерной сходимости, и $x(\cdot) \in C$.
+
+Наконец, переходим к пределу в итеративной последовательности:
+$$
+x(t) = x^0 + \int\limits_{t_0}^{t} g(s, x(s)) ds, \;\; x(\cdot) \in AC[t_0 - h, t_0 + h].
+$$
+
+Теорема доказана.
+\end{proof}
+
+\subsection*{Единственность решения}
+Для единственности решения мы обычно требуем липшицевость по $x$:
+$$
+\norm{g(t,x'') - g(t,x'))} \leqslant L(t) \norm{x'' - x'},
+$$
+$L(t)$ --- интегрируема по Лебегу.
+
+Ослабив это условие, добавим его к списку \textit{условий Каратеодори} 1)--3):
+\begin{itemize}
+\item[4')] $\forall x', x'' \;\; \exists L(t)$ --- интегрируемая по Лебегу: 
+$$
+\scalar{g(t, x'') - g(t,x'), x'' - x'} \leqslant L(t) \norm{x'' - x'}^2.
+$$ 
+\end{itemize}
+
+Нетрудно показать, что всякая липшицевая по $x$ функция удовлетворяет этому условию в силу неравенства Коши-Буняковского-Шварца.
+
+\begin{theorem}[Теорема о единственности решения по Каратеодори]
+Пусть выполнены условия Каратеодори 1), 2), 3), а также условие 4'). Тогда решение по Каратеодори задачи Коши \eqref{eq:system dotx equal g(t,x(t))} единственно.
+\end{theorem}
+\begin{proof}
+Предположим противное. Пусть $x'(t)$ и $x''(t)$ --- два различных решения \eqref{eq:system dotx equal g(t,x(t))} на $[t_0, t_0+h]$.
+
+Рассмотри вспомогательную функцию
+$$
+z(t) = \norm{x''(t) - x'(t)}^2 = \scalar{x''(t) - x'(t), x''(t) - x'(t)}.
+$$
+Она дифференцируема почти всюду, и для п.в. $t$
+$$
+\frac{dz}{dt} = 2 \scalar{g(t, x''(t)), g(t, x'(t)) , x''(t) - x'(t)} \leqslant 2 L(t) z(t).
+$$
+При этом $z(t_0) = 0$ (из определения $z$).
+
+Тогда неравенство
+$$
+\frac{dz}{dt} - 2 L(t) z(t) \leqslant 0
+$$
+домножим на $\exp\left\{-\int\limits_{t_0}^{t} L(\xi) d\xi \right\}$:
+$$
+\frac{d}{dt} \left( z(t) e^{- 2 \int\limits_{t_0}^{t} L(\xi) d\xi} \right) \leqslant 0
+$$
+для п.в. $t$ (верно там, где она дифференцируема). Проинтегрировав, получаем:
+$$
+0 \leqslant z(t) e^{- 2 \int\limits_{t_0}^{t} L(\xi) d\xi} \leqslant 0.
+$$
+Левое неравенство достигается в силу определния $z$, а правое следует из того факта, что производная отрицательная, а значение $z(t_0) = 0$.
+
+Тогда в обоих случаях достигаются равенства, и функции совпадают.
+\end{proof}
+
+\subsection*{Продолжимость решения}
+В случае с решением по Каратеодори также возникает вопрос продолжимости решения вправо.\textit{В условиях Каратеодори есть ограниченность интегрируемой функцией, в теореме о существовании решения мы ограничили интеграл от этой функции $m(\cdot)$ значением $r$. Разве этого не достаточно? Оказывается, нет.}
+
+Мы рассматриваем систему на отрезке времени $[t_0 - a, t_0 + a]$. 
+
+Зафиксируем $h_1 < a$ и проинтегрируем исходную систему на $[t_0, t_0 + h_1]$. При этом $\norm{x(t_0 + h_1) - x^0} < r_1$. Переобозначим полученное значение в точке $\xi_1 = x(t_0 + h_1)$ и запишем новую задачу Коши:
+$$
+\left\{
+\begin{aligned}
+& \dot{x}(t) = g(t, x(t)), \\
+& x(t_0 + h_1) = \xi^1.
+\end{aligned}
+\right.
+$$
+Таким образом, мы продвинулись на $h_1$ вправо по времени.
+
+Далее аналогичным образом выберем $h_2, h_3$ и т.~д. Для каждой получающейся задачи Коши мы можем взять новую $m(\cdot)$ и варьировать соответствующее ей значение $r$, устремляя таким образом $h \to a$ и $r \to +\infty$. При этом $r$ не будет ограничено, если $h_1 + h_2 + \ldots < a$. Рассмотрим пример.
+
+\begin{example}
+$$
+\left\{
+\begin{aligned}
+& \dot{x}(t) = (x(t))^2, \\
+& x(t) = 1
+\end{aligned}
+\right.
+$$
+Проинтегрировав систему:
+$$
+\int \frac{dx}{x^2} = \int dt,
+$$
+получим решение $x(t) = \frac{1}{1 - t}$, неограниченно растущее в окрестности $t = 1$.
+\end{example}
+
+Покажем, что непродолжимость решения может возникать только в случае неограниченного роста функции. Введём обозначения:
+$$
+\bar{\tau} = \sup \left\{ \tau \in (t_0, t_0 + a) \colon \exists x(\cdot) \text{ --- решение ЗК \eqref{eq:system dotx equal g(t,x(t))} при } t \in [t_0, \tau] \right\},
+$$
+$$
+\ubar{\tau} = \inf \left\{ \tau \in (t_0 - a, t_0) \colon \exists x(\cdot) \text{ --- решение ЗК \eqref{eq:system dotx equal g(t,x(t))} при } t \in [\tau, t_0] \right\}.
+$$
+Введённые обозначения корректны, поскольку множества непусты в силу существования решения и его ограниченности на отрезке (функции непрерывны).
+
+\begin{theorem}
+Пусть $\bar{\tau} < t_0 + a$ ($\ubar{\tau} > t_0 - a$). Тогда для всех $\forall r > 0$ сушествует $\exists \tau \in (t_0, \bar{\tau})$ ($\tau \in (\ubar{\tau}, t_0)$) такое, что $\norm{x(\tau) - x^0} = r$.
+\end{theorem}
+\begin{proof}
+Предположим противное. Пусть $\exists \bar{r} >0$: $\forall \tau \in (t_0, \bar{\tau}) \thus \norm{x(\tau) - x^0} < \bar{r}$.
+
+Пусть $\Delta > 0, r = \bar{r} + \Delta$, тогда $\forall t \in [t_0, \bar{\tau})$ верно
+$$
+B_{\Delta}(x(t)) \subseteq B_r(x^0).
+$$
+Возьмём $\delta = t_0 + a - \bar{\tau} > 0$. Тогда $\bar{\tau} + \delta < t_0 + a$.
+
+Для любого $\forall \tau \in [t_0, \bar{\tau}) \thus [\tau - \delta, \tau + \delta] \times B_{\Delta}(x(\tau)) \subseteq [t_0 - a, t_0 + a] \times B_r(x^0)$. 
+
+Существует $\exists h > 0, h < \delta$: $\int\limits_{\tau}^{\tau + h} m(s) ds \leqslant \Delta$. При этом получается, что $h$ --- не зависит от $\tau$ (в силу абсолютной непрерывности интеграла Лебега), то есть мы нашли универсальный шаг, на который можем продвигаться при построении решения: $h$ --- универсально для всех $\tau \in [t_0, \bar{\tau})$, то есть мы можем проинтегрировать $x(\cdot)$ до момента $\tau + h$ для любого $\tau$. По определению $\bar{\tau}$ --- это супремум всех моментов времени, когда существует решение. Из определения супремума: $\exists \tau \colon \bar{\tau} - \tau < h/2$. Для этого $\tau$ и проинтегрируем систему до $\tau + h$. Но тогда получается, что $\tau + h > \bar{\tau}$, что приводит нас к противоречию.
+
+Теорема доказана.
+\end{proof}
+
+Отбросим теперь в условиях Каратеодори условие с $a$ и заменим отрезок времени на $[t_0, t_1]$ либо $\R$ (в 1) и 2)) и добавим условия продолжимости вправо(влево)
+\begin{equation}
+\scalar{g(t,x), x} \leqslant \alpha \norm{x}^2 + \beta \;\; \forall x, \; \alpha, \beta = const > 0
+\end{equation}
+$$
+(-\scalar{g(t,x), x} \leqslant \alpha \norm{x}^2 + \beta).
+$$
+
+Условие продолжимости в обе стороны (условие сублинейного роста):
+$$
+\norm{g(t,x)} \leqslant A \norm{x} + B, \;\; A, B = const > 0.
+$$
+
+\begin{remark}
+Из условия сублинейного роста следует продолжимость в обе стороны, поскольку
+$$
+\scalar{g(t,x), x} \leqslant \norm{g(t,x)} \norm{x} \leqslant A \norm{x}^2 + B \norm{x} \leqslant \alpha \norm{x}^2 + \beta.
+$$
+Как показать, что такие $\alpha, \beta$ существуют? Положим $\alpha = A + 1$, тогда дискриминант $\norm{x}^2 - B\norm{x} + \beta >= 0$ будет отрицательный, то есть это будет верно для всех $\beta$.
+\end{remark}
+
+Сфорулируем последнюю на сегодня теорему.
+
+\begin{theorem}
+Пусть выполнено условие (2). Тогда решение $x(\cdot)$ задачи Коши \eqref{eq:system dotx equal g(t,x(t))} продолжимо вправо.
+\end{theorem}
+\begin{proof}
+Предположим противное, тогда, в силу предудыщей теоремы, $\norm{x(t)}$ неограничена.
+
+Рассмотрим $z(t) = \norm{x(t)}^2 = \scalar{x(t), x(t)}$.
+
+$$
+\frac{dz}{dt} = 2 \scalar{g(t, x(t)), x(t)} \leqslant 2 \alpha z(z) + 2\beta,
+$$
+$$
+\frac{dz}{dt} - 2 \alpha z \leqslant 2\beta.
+$$
+
+Домножим на $\exp \left\{ -2\alpha t \right\}$:
+$$
+\frac{d}{dt}\left( z(t) e^{-2\alpha t} \right) \leqslant \beta e^{-2\alpha t} \thus
+$$
+$$
+\thus z(t) e^{-2\alpha t} - z(t_0) e^{-2\alpha t_0} \leqslant \int\limits_{t_0}^{t} 2 \beta e^{-2 \alpha s} ds \thus
+$$
+$$
+\thus 0 \leqslant z(t) \leqslant z(t_0) e^{-2\alpha t_0} + \int\limits_{t_0}^{t} 2 \beta e^{-2 \alpha s} ds.
+$$
+
+Значит, $z(t)$ ограничена, следовательно, $\norm{x}$ ограничена, а значит, продолжимость вправо есть.
+
+Теорема доказана.
+\end{proof}
+
+Наконец, можем заменить условие 3) в условиях Каратеодори условием сублинейного роста, положив $m(t) = Ar + B$ ($r$ - из условий теоремы существования решения).
+
+\subsection*{Итоговые условия на $f(t,x,u)$}
+\begin{enumerate}
+\item $f(t,x,u)$ определена на $\R \times \R^n \times \R^n$ (или $[t_0, t_1] \times \R^n \times \R^n$);
+\item $f(t,x,u)$ непрерывна по $(t,x,u)$, $u(\cdot)$ --- измерима;
+\item $\norm{f(t,x'',u) - f(t,x',u)} \leqslant L \norm{x'' - x'}$, $L = const$;
+\item $\norm{f(t,x,u)} \leqslant A \norm{x} + B$, $\forall(t,x,u)$.
+\end{enumerate}
+Из них следуют соответствующие \textbf{условия на $g(t,x)$}:
+\begin{enumerate}
+\item $g(t,x)$ определена при п.в. $t \in \R$ для всех $\forall x$ (п.в. $t \in [t_0, t1]$ для всех $\forall x$);
+\item $g(t,x)$ --- измерима по $t$ для всех $x$;\\
+	  $g(t,x)$ --- непрерывна по $x$ для п.в. $\dot{\forall} t \in \R (t \in [t_0, t_1])$;
+\item $\norm{g(t,x'') - g(t,x')} \leqslant L(t) \norm{x'' - x'}$;
+\item условие продолжимости вправо (влево):
+$$
+\scalar{g(t,x), x} \leqslant \alpha \norm{x}^2 + \beta \;\; \forall x, \; \alpha, \beta = const > 0
+$$
+$$
+(-\scalar{g(t,x), x} \leqslant \alpha \norm{x}^2 + \beta).
+$$
+\end{enumerate}
+
+\end{document}
