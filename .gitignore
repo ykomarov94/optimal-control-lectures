@@ -3,8 +3,10 @@
 *.fdb_latexmk
 *.fls
 *.log
-*.pdf
 *.aux
 *.out
 
 */.DS_Store
+
+nonlinear.pdf
+linear.pdf
