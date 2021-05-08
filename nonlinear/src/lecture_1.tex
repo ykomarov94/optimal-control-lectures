@@ -31,9 +31,9 @@ $$
 \textit{Пока что не затрагиваем вопрос, в каком смысле мы будем понимать траекторию системы \ref{l1:system}. Позже мы формализуем траекторию системы с измеримым управлением с использованием решения по Каратеодори.}
 $$
 \begin{aligned}
-    & t_0, x_0, x_1 \text{ --- фикс.}, \\
+    & t_0, x^0, x^1 \text{ --- фикс.}, \\
     & t_0 \in \R, \\
-    & x_0, x_1 \in \R^n.
+    & x^0, x^1 \in \R^n.
 \end{aligned}
 $$
 
@@ -67,7 +67,7 @@ $$
 \dot{\tilde{x}} = \tilde{f}(\tilde{x}(t), u(t)) \Leftrightarrow
     \left\{
         \begin{aligned}
-            & \dot{x}_0(t) = f_0(x(t), u(t)), \\
+            & \dot{x}_0(t) = f^0(x(t), u(t)), \\
             & \dot{x}(t) = f(x(t), u(t)),
         \end{aligned}
     \right.
@@ -87,10 +87,10 @@ $$
 $$
 
 Обобщая сказанное, получаем:
-\begin{equation}\label{l1:system}
+\begin{equation}\label{l1:pmp_system}
     \left\{
         \begin{aligned}
-            & \dot{\tilde{x}}(t) = f(x(t), u(t)), \\
+            & \dot{\tilde{x}}(t) = \tilde{f}(x(t), u(t)), \\
             & u(t) \in \mathscr{P}, \\
             & \tilde{x}(t_0) = \begin{bmatrix} 0 \\ x^0 \end{bmatrix}, \quad \tilde{x}(t_1) \in \R \times \left\{ x^1 \right\}.
         \end{aligned}
@@ -107,3 +107,226 @@ $$
 $$
 \tilde{\mathscr{H}}(\tilde{\psi}, \! \tilde{x}, \! u) \! = \! \scalar{\tilde{\psi}}{\tilde{f}(\tilde{x},\!u)} \! = \! \scalar{\tilde{\psi}}{\tilde{f}(x,\!u)} \! = \! \psi_0 f^0(x,\!u) + \psi_1 f^1(x,\!u) + \ldots + \psi_n f^n(x,\!u).
 $$
+
+\subsection*{Принцип Максимума Понтрягина}
+
+\begin{theorem}[частный случай ПМП]
+    Пусть $\{x^*(\cdot), u^*(\cdot)\}$ --- оптимальная пара (при $t_1 = t_1^*, t \in [t_0^*, t_1^*], t_0 = t_0^*$).
+
+    Тогда $\exists \tilde{\psi}^* \colon [t_0^*, t_1^*] \to \R^{n+1}$ такая, что:
+    \begin{enumerate}
+        \item[(УН) 1)] $\tilde{\psi}^*(\cdot) \not\equiv 0$ ($\Leftrightarrow \tilde{\psi}^*(t) \neq 0$ для п.в. $t \in [t_0^*, t_1^*]$);
+        \item[(СС) 2)]
+        $$
+            \dot{\tilde{\psi}}^*(t) = \left. -\frac{\d \tilde{\mathscr{H}}}{\d \tilde{x}} \right|_{\begin{matrix} \tilde{\psi} = \tilde{\psi}^*(t) \\ \tilde{x} = \tilde{x}^*(t) \\ u = u^*(t) \end{matrix}},
+            \quad \text{для п.в.} t \in [t_0^*, t_1^*];
+        $$
+        \item[(УМ) 3)] $\tilde{\mathscr{H}}(\tilde{\psi}^*(t), \tilde{x}^*(t), u^*(t)) = \sup\limits_{u \in \mathscr{P}} \tilde{\mathscr{H}}(\tilde{\psi}^*(t), \tilde{x}^*(t), u)$ для п.в. $t \in [t_0^*, t_1^*]$.
+        \item[4)] $\psi_0^* (\cdot) \equiv const \leqslant 0$, \\
+        $\tilde{\mathscr{H}}(\tilde{\psi}^*(t), \tilde{x}^*(t)) \equiv const = 0$.
+    \end{enumerate}
+\end{theorem}
+
+\subsection*{Обсуждение}
+
+\begin{remark}
+    Т.о. при помощи (УМ) ушли от задачи в терминах функций к задаче в точке:
+    $$
+        u^*(t) \in \Argmax\limits_{u \in \mathscr{P}} \tilde{\mathscr{H}}(\tilde{\psi}^*(t), \tilde{x}^*(t), u).
+    $$
+     Введём обозначение $\tilde{\mathscr{H}}(\tilde{\psi}, \tilde{x}) = \sup\limits_{u \in \mathscr{P}} \tilde{\mathscr{H}}(\tilde{\psi}, \tilde{x}, u)$.
+\end{remark}
+
+\begin{remark}
+    Пункт 4) практически полностью следует из предыдущих. Действительно, по построению
+    $$
+        \dot{\tilde{x}}^*(t) = \left. \frac{\d \tilde{\mathscr{H}}}{\d \tilde{\psi}} \right|_{\begin{matrix} \tilde{\psi} = \tilde{\psi}^*(t) \\ \tilde{x} = \tilde{x}^*(t) \\ u = u^*(t) \end{matrix}},
+    $$
+    а из (СС) следует, что
+    $$
+    \frac{d \tilde{\mathscr{H}}}{d t} = \left.\left(\frac{\d \tilde{\mathscr{H}}}{\d \tilde{\psi}} \frac{d \tilde{\psi}}{d t} + \frac{\d \tilde{\mathscr{H}}}{\d \tilde{x}} \frac{d \tilde{x}}{d t} \right)\right|_{\begin{matrix} \tilde{\psi} = \tilde{\psi}^*(t) \\ \tilde{x} = \tilde{x}^*(t) \end{matrix}} = \dot{\tilde{x}}^*(t) \dot{\tilde{\psi}}^*(t) - \dot{\tilde{\psi}}^*(t) \dot{\tilde{x}}^*(t) = 0.
+    $$
+    % Равенство $\tilde{\mathscr{H}}(\tilde{\psi}^*(t), \tilde{x}^*(t)) = 0$ следует НЕИЗВЕСТНО ОТКУДА TODO.
+
+    Первое условие из 4) следует из того,
+    $$
+        \dot{\psi}_0^*(t) = \left. -\frac{\d \tilde{\mathscr{H}}}{\d x_0} \right|_{\ldots} = 0.
+    $$
+    Для остальных же переменных:
+    $$
+        \dot{\psi}_i^*(t) = \left. -\frac{\d \tilde{\mathscr{H}}}{\d x_i} \right|_{\ldots} = -\psi_0^* \dfrac{\d f^0}{\d x_i} (x^*(t), u^*(t)) - \ldots - -\psi_n^* \dfrac{\d f^n}{\d x_i} (x^*(t), u^*(t)).
+    $$
+    В векторном виде это
+    $$
+        (CC') \quad \dot{\tilde{\psi}}^*(t) = - \left( \dfrac{\d \tilde{f}}{\d \tilde{x}} \right)' \tilde{\psi^*}(t),
+    $$
+    то есть система линейных ОДУ.
+\end{remark}
+
+Обсудим теперь условия из ПМП --- почему  мы накладываем такие ограничения?
+\begin{enumerate}
+    \item Пусть в какой-то момент времени $\tilde{\psi}^*(\tau) = 0$. Поскольку $(CC')$ --- система линейных ОДУ, её решение единственно. Поскольку $\tilde{\psi}(t) \equiv 0$ удовлетворяет $(CC')$ с нулевым начальным условием, то это единственное решение $(CC')$, то есть $\tilde{\psi}(\tau) = 0 \Leftrightarrow \tilde{\psi}(t) \equiv 0$.
+    \item Если бы $\tilde{\psi}^* \equiv 0$, то из (СС) и (УМ) мы бы получили тождества $0 = 0$, и  ПМП не помог бы решить задачу.
+    \item Функция $\tilde{\psi}^*(\cdot)$ определена с точностью до $\alpha = const > 0$, то есть не единственным образом. Для того, чтобы внести единообразие в поиск решения, в случае $\psi_0^* \neq 0$ \textit{(нормальный случай)} будем брать $\alpha = \dfrac{1}{\abs{\psi_0^*}}$ (т.о. сводя к $\psi_0^* = -1$). В \textit{анормальном случае} ($\psi_0^* = 0$) будем требовать $\norm{\tilde{\psi}^*(t_0)} = 1$.
+\end{enumerate}
+
+\begin{remark}
+    Функция $\tilde{\mathcal{H}}(\tilde{\psi}, \tilde{x}, u)$ называется функцией Гамильтона-Понтрягина потому, что
+    $$
+        \left\{
+            \begin{aligned}
+                & \dot{\tilde{x}}^*(t) = \left. -\dfrac{\d \tilde{\mathcal{H}}}{\d \tilde{\psi}} \right|_{\ldots},\\
+                & \dot{\tilde{\psi}}^*(t) = \left. -\dfrac{\d \tilde{\mathcal{H}}}{\d \tilde{x}} \right|_{\ldots}
+            \end{aligned}
+        \right.
+    $$
+    при подстановке $u = u^*$ становится Гамильтоновой системой, $\tilde{\mathscr{H}}(\tilde{\psi}, \tilde{x})$ --- гамильтониан.
+\end{remark}
+
+\subsection*{Пример того, как пользоваться ПМП}
+Пусть $\Argmax\limits_{u \in \mathscr{P}} \tilde{\mathscr{H}}(\tilde{\psi}, \tilde{x}, u) = \left\{u^{\star}(\tilde{\psi}, \tilde{x})\right\}$.
+
+\begin{enumerate}
+    \item Ищем все пары $\{x(\cdot), u(\cdot)\}$, совместимые с условиями ПМП. Для этого
+    \begin{enumerate}
+        \item Если $\{x^*(\cdot), u^*(\cdot)\}$ --- оптимальная пара, то из (УМ) следует 
+        $$
+            u^*(t) = u^{\star}(\tilde{\psi}^*(t), \tilde{x}^*(t)).
+        $$
+        \item Выписываем объединённую систему:
+        $$
+            \left\{
+                \begin{aligned}
+                    & \dot{\tilde{x}}(t) = \tilde{f}(\tilde{x}(t), u^{\star}(\tilde{\psi}(t) ,\tilde{x}(t))), \\
+                    & \dot{\tilde{\psi}}(t) = - \left(\dfrac{\d \tilde{f}(\tilde{x}(t), u^{\star}(\tilde{\psi}(t) ,\tilde{x}(t)))}{\d \tilde{x}}\right)' \tilde{\psi}(t).
+                \end{aligned}
+            \right.
+        $$
+        Это система нелинейных ОДУ относительно $\tilde{\psi}, \tilde{x}$. Добавим краевые условия (для нормального случая, анормальный выписывается аналогично):
+        $$
+            \left\{
+                \begin{aligned}
+                    & \tilde{x}(t_0) = \tilde{x}^0 = \begin{bmatrix} 0 \\ x_0 \end{bmatrix}, \\
+                    & \tilde{\psi}(t_0) = \tilde{\psi}^0 = \begin{bmatrix} -1 \\ \psi^0 \end{bmatrix}.
+                \end{aligned}
+            \right.
+        $$
+        Здесь $\psi^0$ --- просто формальное обозначение, мы вводим $n$ новых переменных.
+        \item Решаем систему, получаем
+        $$
+            \left\{
+                \begin{aligned}
+                    & \tilde{x}[t] = \tilde{x}(t, t_0, \tilde{x}^0, \tilde{\psi^0}), \\
+                    & \tilde{\psi}[t] = \tilde{\psi}(t, t_0, \tilde{x}^0, \tilde{\psi}^0).
+                \end{aligned}
+            \right.
+        $$
+        \item К этому шагу мы уже ввели $n+1$ переменную:
+        $$
+            \left\{ \psi^0_1, \ldots, \psi^0_n, t_1 \right\}.
+        $$
+        У нас есть $n$ условий на правом конце для $x_i[t_1]$, позволяющих их найти:
+        $$
+            x_i[t_1; t_0, \tilde{x}^0, (-1, \psi^0)'] = x_i^1
+        $$
+        плюс дополнительное условие из 4):
+        $$
+            \tilde{\mathscr{H}}(\tilde{\psi}^*(t), x^*(t)) \equiv const = 0.
+        $$
+        Решая полученную систему, получаем параметризованное управление $u^{\star}(\tilde{x}^0, \tilde{\psi^0})$ и соответствующую ему траекторию.
+    \end{enumerate}
+    \item Как правило, решений-параметров будет конечное число. Как выбрать одно, решающее исходную задачу?
+        \begin{enumerate}
+            \item Условия 2-го порядка в ПМП \textit{(мы их использовать не будем)}.
+            \item Подставить в $J[\cdot]$ и найти минимизирующие значения параметров.
+        \end{enumerate}
+    \end{enumerate}
+
+\begin{example}
+    $$
+        \left\{
+            \begin{aligned}
+                & \dot{x} = u, \\
+                & J = \int\limits_{0}^{t_1} u^2(t) dt \to \min, \\
+                & x(0) = 0 \to x(t_1) = 1, \\
+                & u(t) \in [-1; 1].
+            \end{aligned}
+        \right.
+    $$
+    Выписываем систему на $\tilde{x}$:
+    $$
+        \left\{
+            \begin{aligned}
+                & \dot{x}_0(t) = u^2(t), \\
+                & \dot{x}_1(t) = u(t),
+            \end{aligned}
+        \right.
+    $$
+    отсюда
+    $$
+        \tilde{\mathscr{H}}(\tilde{\psi}, \tilde{x}, u) = \psi_0 u^2 + \psi_1 u.
+    $$
+
+    Нормальный случай: $\psi_0 < 0 \thus \psi_0 = -1$. Ищем максимизаторы для $\tilde{\mathscr{H}}$:
+    $$
+        \dfrac{d}{du}(-u^2 + \psi_1 u) = -2u + \psi_1 = 0 \thus u^{\star} = \dfrac{\psi_1}{2}.
+    $$
+    Выписываем $(CC')$:
+    $$
+        \left\{
+            \begin{aligned}
+                & \dot{\psi}_0(t) = 0, \\
+                & \dot{\psi}_1(t) = - \dfrac{\d \tilde{\mathscr{H}}}{\d \tilde{x}} = 0.
+            \end{aligned}
+        \right.
+    $$
+    Тогда объединённая система имеет вид (подставляем $u^{\star}$):
+    $$
+        \left\{
+            \begin{aligned}
+                & \dot{x}_0 = \dfrac{(\psi_1)^2}{4}, \\
+                & \dot{x}_1 = \dfrac{\psi_1}{2}, \\
+                & \dot{\psi}_0 = 0, \\
+                & \dot{\psi}_1 = 0.
+            \end{aligned}
+        \right.
+    $$
+    Начальные условия:
+    $$
+        \left\{
+            \begin{aligned}
+                & x_0(0) = 0, \\
+                & x_1(0) = 0, \\
+                & \psi_0(0) = -1, \\
+                & \psi_1(0) = \psi_1^0.
+            \end{aligned}
+        \right.
+    $$
+    Проинтегрировав, получим:
+    $$
+        \left\{
+            \begin{aligned}
+                & x_0(t) = \left(\dfrac{\psi_1^0}{2}\right)^2 t, \\
+                & x_1(t) = \dfrac{\psi_1^0}{2} t, \\
+                & \psi_0 \equiv -1, \\
+                & \psi_1 \equiv \psi_1^0.
+            \end{aligned}
+        \right.
+    $$
+    Найдём значения $\psi_1^0$ и $t_1$:
+    $$
+        \left\{
+            \begin{aligned}
+                & x_1(t_1) = 1 = \dfrac{\psi_1^0}{2} t_1, \\
+                & \tilde{\mathscr{H}} = - \left(\dfrac{\psi_1^0}{2}\right)^2 + \dfrac{(\psi_1^0)^2}{2} = \dfrac{(\psi_1^0)^2}{4} = 0.
+            \end{aligned}
+        \right.
+    $$
+    Эта система не совместна, следовательно, нормальный случай решения не даёт.
+
+    Анормальный случай --- УПРАЖНЕНИЕ --- также решения не даёт, следовательно, оптимального решения данная задача не имеет.
+\end{example}
+
+\begin{remark}
+    ПМП является необходимым, но не достаточным условием отыскания оптимума.
+\end{remark}
