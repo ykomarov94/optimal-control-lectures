@@ -1,0 +1,25 @@
+\chapter{Лекция N+1. Случай неполной управляемости: $\abs{W} = 0$}
+
+Здесь будем действовать по аналогичной схеме, начнём с поиска $\mu$.
+
+$$
+c \in \H_{\mu}^0 \Leftrightarrow \scalar{l}{c} \leqslant \mu^* \sqrt{\scalar{l}{Wl}}, \;\; W = W' \geqslant 0.
+$$
+
+В этом случае (ЗМ) разрешима не для любого $c \in \R$.
+
+\textbf{TODO: Пример про не очень управляемую систему из Вари}
+
+\begin{statement}
+    (ЗМ) разрешима (для некоторого $\mu \colon c \in \H_{\mu}^0$) тогда и только тогда, когда $c \perp Ker W (\Leftrightarrow c \in Im W)$.
+\end{statement}
+\begin{proof}
+    В две стороны.
+
+    \textbf{Необходимость}. Пусть это не так, то есть $c \not\perp Ker W$, и $\exists \mu \colon c \in \H_{\mu}^0$. Т.к. $\abs{W} = 0$, то $Ker W \neq \{0\} \Rightarrow \exists l \in Ker W \setminus \{0\} \colon \scalar{l}{c} \neq 0$. Возьмём в качестве $\tilde{l} = l \; \mathrm{sgn} \scalar{l}{c}$, тогда
+    $$
+        0 < \scalar{\tilde{l}}{c} \leqslant \mu \sqrt{\scalar{\tilde{l}}{W\tilde{l}}} = 0
+    $$
+
+    
+\end{proof}
