@@ -1,0 +1,390 @@
+\chapter*{Другие частные случаи ПМП}
+
+В прошлый раз мы получили ПМП для случая минимизации интегрального функционала с незакреплённым моментом времени $t_1$ и краевыми условиями типа точка-точка.
+
+\begin{theorem}[частный случай ПМП]\label{nonlin2:theorem_pmp_basic}
+    Пусть $\{x^*(\cdot), u^*(\cdot)\}$ --- оптимальная пара (при $t_1 = t_1^*, t \in [t_0^*, t_1^*], t_0 = t_0^*$).
+
+    Тогда $\exists \tilde{\psi}^* \colon [t_0^*, t_1^*] \to \R^{n+1}$ такая, что:
+    \begin{enumerate}
+        \item[(УН) 1)] $\tilde{\psi}^*(\cdot) \not\equiv 0$ ($\Leftrightarrow \tilde{\psi}^*(t) \neq 0$ для п.в. $t \in [t_0^*, t_1^*]$);
+        \item[(СС) 2)]
+        $$
+            \dot{\tilde{\psi}}^*(t) = \left. -\frac{\d \tilde{\mathscr{H}}}{\d \tilde{x}} \right|_{\begin{matrix} \tilde{\psi} = \tilde{\psi}^*(t) \\ \tilde{x} = \tilde{x}^*(t) \\ u = u^*(t) \end{matrix}},
+            \quad \text{для п.в.} t \in [t_0^*, t_1^*];
+        $$
+        \item[(УМ) 3)] $\tilde{\mathscr{M}}(\tilde{\psi}^*(t), \tilde{x}^*(t)) = \tilde{\mathscr{H}}(\tilde{\psi}^*(t), \tilde{x}^*(t), u^*(t)) = \sup\limits_{u \in \mathscr{P}} \tilde{\mathscr{H}}(\tilde{\psi}^*(t), \tilde{x}^*(t), u)$ для п.в. $t \in [t_0^*, t_1^*]$.
+        \item[4)] $\psi_0^* (\cdot) \equiv const \leqslant 0$, \\
+        $\tilde{\mathscr{M}}(\tilde{\psi}^*(t), \tilde{x}^*(t)) \equiv const = 0$.
+    \end{enumerate}
+\end{theorem}
+
+В этот раз мы его модифицируем под конкретные задачи, в которых условия будем последовательно усложнять.
+
+Для получения дальнейших результатов нам понадобится небольшой экскурс в дифференциальную геометрию.
+\section*{О гладких многообразиях}
+Существует два способа задать гладкое многообразие $\mathscr{X} \subseteq \R^n$: параметрический и неявный.
+
+\subsubsection*{Параметрический способ}
+Явный способ задания многообразия, состоящий в выражении элементов $\mathscr{X}$ через $k$ параметров $(k <= n)$:
+$$
+\mathscr{X} = \left\{ x \in \R^n \mid \exists\;(\alpha_1, \ldots, \alpha_n) \in \R^k \colon x_i = x_i(\alpha_1, \ldots, \alpha_k), \;  i = 1, 
+\ldots, n \right\}.
+$$
+Порядок гладкости такого многообразия определяется условием 
+$$
+\exists\; \dfrac{\d x_i}{\d \alpha_j} \in C.
+$$
+
+\begin{remark}
+    Гладкость многообразия определяется существованием гладкой параметризации, при этом не обязательно все параметризации будут гладкими. Например, прямую $x_1 - x_2 = 0$ можно параметризовать через дельта-функцию или сигнум $(x_i(\alpha) = \mathrm{sgn} (\alpha))$: такая параметризация не будет гладкой, однако само многообразие гладкое.
+\end{remark}
+
+\begin{example}
+$$
+    \begin{aligned}
+        & n = 2, \\
+        & \left\{
+            \begin{aligned}
+                &x_1 = t^3,\\
+                &x_2 = \abs{t^3}.
+            \end{aligned}    
+        \right.
+    \end{aligned}
+$$
+TODO: картинка
+\end{example}
+Очевидно, приведённое многообразие гладким не является.
+
+Однако параметризация является гладкой (в нуле производная определена и непрерывна). В чём противоречие?
+
+У данной параметризации есть \textbf{особая точка}: $\dfrac{d x}{d t} (0) = 0$. Гладкие же кривые особых точек не содержат.
+
+Таким образом, гладкое многообразие --- то, которое допускает гладкую параметризацию без особых точек.
+
+Для того, чтобы получить уравнение прямой к касательной, используем формулу Тейлора, опуская все члены, начиная со второго:
+$$
+x(t) = x(t') + \dfrac{d x(t')}{d t} (t - t') + \ldots
+$$
+
+В более общем случае касательная гиперплоскость определяется уравнением
+$$
+x(\alpha_1, \ldots, \alpha_k) = x(\alpha_1', \ldots, \alpha_k') + \dfrac{\d x (\alpha')}{\d \alpha} \Delta \alpha + \ldots,
+$$
+где
+$$
+\dfrac{\d x}{\d \alpha} =
+\begin{bmatrix}
+    \dfrac{\d x_1}{\d \alpha_1} & \ldots & \dfrac{\d x_1}{\d \alpha_k} \\
+    \ldots & \ldots & \ldots \\
+    \dfrac{\d x_n}{\d \alpha_1} & \ldots & \dfrac{\d x_n}{\d \alpha_k}
+\end{bmatrix}
+.
+$$
+Потребуем, чтобы у параметризации не было особых точек:
+$$
+\mathrm{rg} \dfrac{\d x}{\d \alpha} = k \quad \forall \alpha.
+$$
+Тогда
+$$
+T_{x'} \mathscr{X} = \mathrm{Im} \dfrac{\d x(\alpha')}{\d \alpha}.
+$$
+
+\subsubsection*{Неявный способ задания}
+$$
+\mathscr{X} = \{ x \in \R^n \colon \Phi(x) = 0 \},
+$$
+где
+$$
+\Phi(x) = \begin{bmatrix} \varphi_1(x) \\ \ldots \\ \varphi_m(x) \end{bmatrix}.
+$$
+В случае, когда $\varphi_i(\cdot)$ функционально независимы, получившееся множество $\mathscr{X}$ --- $(n-m)$-мерное многообразие.
+
+По теореме о неявной функции оба способа задания эквивалентны, когда
+$$
+\mathrm{rg} \dfrac{\d \Phi}{\d x} = m.
+$$
+
+Чтобы выразить касательную гиперплоскость через $\Phi(\cdot)$, разложим её в ряд Тейлора в окрестности точки $x'$:
+$$
+\Phi(x) = \Phi(x') + \dfrac{\d \Phi}{\d x} (x - x') + \ldots
+$$
+При этом $\Phi(x) = \Phi(x') = 0$, то есть $T_{x'}\mathscr{X} = \ker\dfrac{\d \Phi}{\d x}$.
+
+Дополнительно нам потребуется следующая теорема.
+\begin{theorem}\label{nonlin2:theorem_smooth_product}
+    Пусть $\mathscr{A} \subset \R^k$, $\mathscr{B} \subset \R^l$ --- гладкие многообразия, $\mathscr{C} = \mathscr{A} \times \mathscr{B}$, и $a \in \mathscr{A}$, $b \in \mathscr{B}$, $c \in \mathscr{C}, c = \begin{bmatrix}
+        a \\ b
+    \end{bmatrix} \in \R^{k + l}$. Тогда
+    $$
+        T_c \mathscr{C} = T_a \mathscr{A} \times T_b \mathscr{B}.
+    $$
+\end{theorem}
+\begin{proof}
+    Параметрическое представление вектора $c$:
+    $$
+        c = \begin{bmatrix} a(\alpha) \\ b(\beta) \end{bmatrix}; \; \text{определим} \; \gamma = \begin{bmatrix} \alpha \\ \beta \end{bmatrix} \thus c = c(\gamma).
+    $$
+    Тогда
+    $$
+        \dfrac{\d c}{\d \gamma} = \begin{bmatrix} \dfrac{\d a}{\d \alpha} & 0 \\ 0 & \dfrac{\d b}{\d \beta} \end{bmatrix},
+    $$
+    и
+    $$
+        T_{c^0} \mathscr{C} = \left. \mathrm{Im} \dfrac{\d c}{\d \gamma} \right|_{c^0} = \left. \mathrm{Im} \dfrac{\d a}{\d \alpha} \right|_{a^0} \times \left. \mathrm{Im} \dfrac{\d b}{\d \beta} \right|_{b^0}.
+    $$
+\end{proof}
+
+\section*{Обобщение на случай $\mathscr{X}^0 \to \mathscr{X}^1$}
+
+Изменим начальные условия в рассмотренной ранее задаче оптимального управления:
+$$
+\left\{
+    \begin{aligned}
+        & x(t_0) = x^0, \\
+        & x(t_1) = x^1,
+    \end{aligned}
+\right.
+\quad \rightarrow \quad
+\left\{
+    \begin{aligned}
+        & x(t_0) \in \mathscr{X}^0, \\
+        & x(t_1) \in \mathscr{X}^1,
+    \end{aligned}
+\right.
+$$
+где $\mathscr{X}^0, \mathscr{X}^1$ --- гладкие многообразия.
+
+Для того, чтобы учесть новый вид краевых условий, к формулировке теоремы \ref{nonlin2:theorem_pmp_basic} добавляем ещё одно условие:
+$$
+    \text{(УТ) 5)} \quad
+    \left\{
+    \begin{matrix}
+        \psi^*(t_0^*) \bot T_{x^*(t_0^*)}\mathscr{X}^0, \\
+        \psi^*(t_1^*) \bot T_{x^*(t_1^*)}\mathscr{X}^1.
+    \end{matrix}
+    \right.
+$$
+
+\begin{remark}
+    В случае, когда $\mathscr{X}^0 = \left\{ x^0 \right\}$, касательное подпространство $T_{x^*(t_0)}\mathscr{X}^0 = T_{x^*(t_0)}x^0 = \left\{ 0 \right\}$. Условие вырождается, поэтому его и не было в оригинальной формулировке Теоремы \ref{nonlin2:theorem_pmp_basic} для задачи точка-точка.
+\end{remark}
+
+\section*{ПМП для неавтономной системы}
+Рассмотрим систему вида:
+$$
+\left\{
+    \begin{aligned}
+        & \dot{x}(t) = f(t, x(t), u(t)), \\
+        & J = \int\limits_{t_0}^{t_1} f^0(t, x(t), u(t)) dt \to \inf\limits_{u(\cdot)}.
+    \end{aligned}
+\right.
+$$
+
+Аналогично предыдущим рассуждениям, вводим переменную $x_0$, упрятывая интеграл внутрь системы. А что с неавтономностью? Введём новую переменную $x_{n+1}$ для того, чтобы сделать систему автономной и применить полученные ранее соотношения:
+$$
+\left\{
+    \begin{aligned}
+        & \dot{x}_0 = f^0(x_{n+1}(t), x(t), u(t)), & x_0(t_0) = 0, \\
+        & \dot{x}(t) = f(x_{n+1}(t), x(t), u(t)), & x(t_0) = x^0, \\
+        & \dot{x}_{n+1} = 1, & x_{n+1}(t_0) = t_0.
+    \end{aligned}
+\right.
+$$
+Таким образом, мы как бы вводим новую переменную $x_{n+1}(t) \equiv t$.
+
+Для такой расширенной системы размерности $n+2$ введём новые обозначения:
+$$
+\begin{matrix}
+\bar{x} = (x_0, x_1, \ldots, x_n, x_{n+1})' \\
+\bar{f} = (f^0, f^1, \ldots, f^n, 1)' \\
+\bar{\psi} = (\psi_0, \psi_1, \ldots, \psi_n, \psi_{n+1})'
+\end{matrix}
+$$
+
+При этом мы получили систему следующего вида:
+$$
+\left\{
+    \begin{aligned}
+        & \dot{\bar{x}} = \bar{f}(x_{n+1}(t), x(t), u(t)), \\
+        & \bar{x}(t_0) = \begin{bmatrix} 0 \\ x^0 \\ \hat{t}_0 \end{bmatrix}, \\
+        & \bar{x}(t_1) = \begin{bmatrix} J \\ x^1 \\ T \end{bmatrix},
+    \end{aligned}
+\right.
+$$
+где $x^0 \in \mathscr{X}^0, x^1 \in \mathscr{X}^1, J \to \inf$. При этом в данной записи $x^0, x^1, J$ --- неопределённые параметры, которые необходимо найти, а $\hat{t}_0$ --- значение, заданное по условию задачи.
+
+$T$ может принимать два вида значений:
+\begin{itemize}
+    \item[а)] $T = \hat{t}_1$ --- если по условию задано фиксированное значение конечного момента времени ($\hat{t}_1$);
+    \item[б)] $T$ --- произвольное.
+\end{itemize}
+
+Введём дополнительные обозначения:
+$$
+\begin{aligned}
+    & \check{x} = (x_1, \ldots, x_n, x_{n+1}) \\
+    & \check{\psi} = (\psi_1, \ldots, \psi_n, \psi_{n+1}) \\
+    & \check{x}(t_0) \in \check{\mathscr{X}}^0 = \mathscr{X}^0 \times \left\{ \hat{t}_0 \right\} \\
+    & \check{x}(t_1) \in \check{\mathscr{X}}^1 = \left[ \begin{aligned}
+        & \mathscr{X}^1 \times \left\{ \hat{t}_1 \right\}, \\
+        & \mathscr{X}^1 \times \R,
+    \end{aligned} \right. \text{в зависимости от задания $T$}.
+\end{aligned}
+$$
+Функция Гамильтона-Понтрягина:
+$$
+\bar{\mathscr{H}} = \scalar{\bar{\psi}}{\bar{f}(t, \bar{x},u)} = \psi_0 f^0(t,x,u) + \scalar{\psi}{f(t,x,u)} + \psi_{n+1} = \tilde{\mathscr{H}}(t, \tilde{\psi}, x, u) + \psi_{n+1}.
+$$
+Гамильтониан
+% $$
+% \bar{\mathscr{M}}(t, \psi, x) = \sup\limits_{v \in \mathscr{P}} \bar{\mathscr{H}} (t, \psi, x, v) = \sup\limits_{v \in \mathscr{P}}\tilde{\mathscr{H}}(t, \tilde{\psi}, x, v) + \psi_{n+1} = \tilde{\mathscr{M}}(t, \psi, x) + \psi_{n+1}.
+% $$
+$$
+\bar{\mathscr{M}}(t, \psi, x) = \bar{\mathscr{H}} (t, \psi, x, u^*) = \tilde{\mathscr{H}}(t, \tilde{\psi}, x, u^*) + \psi_{n+1} = \tilde{\mathscr{M}}(t, \psi, x) + \psi_{n+1}.
+$$
+
+\begin{theorem}[ПМП для неавтономной системы]
+    Пусть $\{x^*(\cdot), u^*(\cdot)\}$ --- оптимальная пара (при $t \in [t_0^*, t_1^*]$).
+
+    Тогда $\exists \bar{\psi}^* \colon [t_0^*, t_1^*] \to \R^{n+2}$ такая, что:
+    \begin{enumerate}
+        \item[(УН) 1)] $\tilde{\psi}^*(\cdot) \not\equiv 0$ ($\Leftrightarrow \tilde{\psi}^*(t) \neq 0$ для п.в. $t \in [t_0^*, t_1^*]$);
+        \item[(СС) 2)]
+        $$
+        \left\{
+            \begin{aligned}
+                & \dfrac{d \psi_0^*(t)}{dt} = 0, \\
+                & \dfrac{d \psi^*(t)}{dt} = \left. -\frac{\d \tilde{\mathscr{H}}}{\d x} \right|_{\ldots}, \\
+                & \dfrac{d \psi_{n+1}^*(t)}{dt} \left. -\frac{\d \tilde{\mathscr{H}}}{\d t} \right|_{\ldots};
+            \end{aligned}
+        \right.
+        $$
+        \item[(УМ) 3)] $\tilde{\mathscr{M}}(t,\tilde{\psi}^*(t), \tilde{x}^*(t)) = \tilde{\mathscr{H}}(t,\tilde{\psi}^*(t), \tilde{x}^*(t), u^*(t)) = \sup\limits_{u \in \mathscr{P}} \tilde{\mathscr{H}}(t,\tilde{\psi}^*(t), \tilde{x}^*(t), u)$, для п.в. $t \in [t_0^*, t_1^*]$.
+        \item[4)] $\psi_0^* (\cdot) \equiv const \leqslant 0$, \\
+        $\tilde{\mathscr{M}}(t, \tilde{\psi}^*(t), \tilde{x}^*(t)) + \psi_{n+1}^*(t) \equiv const = 0$.
+        \item[(УТ) 5)] $\left\{
+            \begin{matrix}
+                \psi^*(t_0^*) \perp T_{x^*(t_0^*)}\mathscr{X}^0, \\
+                \psi^*(t_1^*) \perp T_{x^*(t_1^*)}\mathscr{X}^1,
+            \end{matrix}
+            \right.$\\
+            и в случае, когда $T$ --- произвольное, $\psi_{n+1}^*(t_1^*) = 0$.
+    \end{enumerate}
+\end{theorem}
+\begin{proof}
+    После всех манипуляций с введением дополнительных переменных, формулировка следует из Теоремы \ref{nonlin2:theorem_pmp_basic}, покажем это.
+    \begin{enumerate}
+        \item Из Теоремы \ref{nonlin2:theorem_pmp_basic} следует, что
+        $$
+        \bar{\psi}^* \not\equiv 0.
+        $$
+        Покажем, что $\tilde{\psi}^* \not \equiv 0 \thus \bar{\psi}^* \not \equiv 0$. Предположим противное: ${\tilde{\psi}^*(t) \equiv 0}$, ${\bar{\psi}^*(t)} \equiv 0$. Тогда
+        $$
+            \tilde{\mathscr{M}}(\tilde{\psi}^*(t), x^*(t)) \equiv 0.
+        $$
+        Из условия 4)
+        $$
+            \tilde{\mathscr{M}} + \psi^*_{n+1}(t) \equiv 0 \thus \psi^*_{n+1}(t) \equiv 0 \thus \bar{\psi}^*(t) \equiv 0,
+        $$
+        что приводит нас к противоречию.
+        \item (СС) также следует из условия Теоремы \ref{nonlin2:theorem_pmp_basic} (после явного расписания системы). Поскольку $\bar{\mathscr{H}} = \tilde{\mathscr{H}} + \psi_{n+1}$, то
+        $$
+            \dfrac{d \psi^*(t)}{dt} = \left. -\frac{\d \bar{\mathscr{H}}}{\d x} \right|_{\ldots} = \left. -\frac{\d (\tilde{\mathscr{H}} + \psi_{n+1}))}{\d x} \right|_{\ldots} = \left. -\frac{\d \tilde{\mathscr{H}}}{\d x} \right|_{\ldots}.
+        $$
+        \item (УМ) получается после сокращения слагаемых $\psi_{n+1}^*(t)$ в цепочке:
+        $$
+            \tilde{\mathscr{H}}|_{u = u^*(t)} + \psi_{n+1}^*(t) = \bar{\mathscr{H}}|_{u = u^*(t)} = \bar{\mathscr{M}} = \tilde{\mathscr{M}} + \psi_{n+1}^*(t).
+        $$
+        \item Условие 4) получается напрямую из Теоремы \ref{nonlin2:theorem_pmp_basic} явным выписыванием переменных.
+        % \item Из (СС):
+        % $$
+        %     \dfrac{d \psi^*_{n+1}(t)}{dt} = -\psi_0^* \dfrac{\d f^0(t, x^*(t), u^*(t))}{\d t} - \scalar{\psi^*(t)}{\dfrac{t, x^*(t), u^*(t)}{\d t}}.
+        % $$
+        % Проинтегрируем в обратном времени:
+        % $$
+        %     \psi^*_{n+1}(t) = \psi^*_{n+1}(t_1^*) + \int\limits_{t}^{t_1^*} \left\{ \psi_0^* \dfrac{\d f^0}{\d t} + \scalar{\psi^*(\tau)}{\dfrac{\d f}{\d t}} \right\} d\tau
+        % $$
+        \item Из Теоремы \ref{nonlin2:theorem_pmp_basic} следует, что:
+        $$
+            \left\{
+                \begin{matrix}
+                    \check{\psi}^*(t_0^*) \perp T_{\check{x}^*(t_0^*)}\check{\mathscr{X}}^0, \\
+                    \check{\psi}^*(t_1^*) \perp T_{\check{x}^*(t_1^*)}\check{\mathscr{X}}^1.
+                \end{matrix}
+            \right.
+        $$
+        При этом в соответствии с Теоремой \ref{nonlin2:theorem_pmp_basic} на левом конце (в точке $t_0^*$)
+        $$
+            \check{\psi}^*(t_0^*) \perp T_{\check{x}^*(t_0^*)}\check{\mathscr{X}}^0.
+        $$
+        При этом по Теореме \ref{nonlin2:theorem_smooth_product}
+        $$
+        T_{\check{x}^*(t_0^*)}\check{\mathscr{X}}^0 = T_{x^*(t_0^*)}\mathscr{X}^0 \times T_{x_{n+1}(t_0^*)} \left\{ t_0^* \right\} = T_{x^*(t_0^*)}\mathscr{X}^0 \times \left\{ 0 \right\}.
+        $$
+        Таким образом, условие $\psi^*_{n+1} \perp \left\{ 0 \right\}$ не даёт дополнительной информации, и его можно опустить.
+        
+        На правом конце в случае а) $t_1 = \hat{t}_1$ условие полностью соответствует условию на левом конце.
+
+        В случае б) $T$ --- произв.:
+        $$
+            \check{\mathscr{X}^1} = \mathscr{X}^1 \times \R \thus
+            T_{\check{x}^*(t_1^*)}\check{\mathscr{X}}^1 = T_{{x}^*(t_1^*)}{\mathscr{X}}^0 \times \R
+        $$
+        Для произвольных $\delta x \in T_{{x}^*(t_1^*)}{\mathscr{X}}^0$, $\delta x_{n+1} \in \R$:
+        $$
+            \check{\psi}^*(t_1^*) \perp T_{\check{x}^*(t_1^*)}\check{\mathscr{X}}^1 \Leftrightarrow \scalar{\psi^*(t_1^*)}{\delta x} + \psi_{n+1}^*(t_1^*) \delta x_{n+1} = 0.
+        $$
+        Тогда выберем $\delta x = 0, \delta x_{n+1} \neq 0$, отсюда $\psi_{n+1}^*(t_1^*) = 0$. С другой стороны, выбирая $\delta x \neq 0, \delta x_{n+1} = 0$, получим $\psi^*(t_1^*) \perp T_{x^*(t_1^*)}\mathscr{X}^1$. Таким образом, получены оба условия для УТ на правом конце для случая б).
+    \end{enumerate}
+\end{proof}
+
+\section*{Задача быстродействия для автономной системы}
+В такой задаче
+$$
+    J = t_1 - t_0 = \int\limits_{t_0}^{t_1} 1 d \tau,
+$$
+то есть $f^0 \equiv 1$, остальные условия совпадают с предыдущей постановкой (кроме автономности).
+
+Тогда
+$$
+    \tilde{\mathscr{H}} = \psi_0 + \scalar{\psi}{f(x,u)} = \psi_0 + \mathscr{H},
+$$
+и
+$$
+    \tilde{\mathscr{M}} = \psi_0 + \mathscr{M},
+$$
+где $\mathscr{M} = \sup\limits_{u \in \mathscr{P}} \mathscr{H}$.
+
+Тогда:
+\begin{theorem}
+    Пусть $\{x^*(\cdot), u^*(\cdot)\}$ --- оптимальная пара (при $t \in [t_0^*, t_1^*]$).
+
+    Тогда $\exists \tilde{\psi}^* \colon [t_0^*, t_1^*] \to \R^{n+1}$ такая, что:
+    \begin{enumerate}
+        \item[(УН) 1)] ${\psi}^*(\cdot) \not\equiv 0$ ($\Leftrightarrow {\psi}^*(t) \neq 0$ для п.в. $t \in [t_0^*, t_1^*]$);
+        \item[(СС) 2)]
+        $$
+        \left\{
+            \begin{aligned}
+                & \dfrac{d \psi_0^*(t)}{dt} = 0, \\
+                & \dfrac{d \psi^*(t)}{dt} = \left. -\frac{\d {\mathscr{H}}}{\d x} \right|_{\ldots};
+            \end{aligned}
+        \right.
+        $$
+        \item[(УМ) 3)] ${\mathscr{M}}({\psi}^*(t), {x}^*(t)) = {\mathscr{H}}({\psi}^*(t), {x}^*(t), u^*(t)) = \sup\limits_{u \in \mathscr{P}} \! {\mathscr{H}}({\psi}^*(t), {x}^*(t), u)$, для п.в. $t \in [t_0^*, t_1^*]$.
+        \item[4)] $\psi_0^* (\cdot) \equiv const \leqslant 0$, \\
+        ${\mathscr{M}}({\psi}^*(t), {x}^*(t)) \equiv const \geqslant 0$.
+        \item[(УТ) 5)] $\left\{
+            \begin{matrix}
+                \psi^*(t_0^*) \perp T_{x^*(t_0^*)}\mathscr{X}^0, \\
+                \psi^*(t_1^*) \perp T_{x^*(t_1^*)}\mathscr{X}^1,
+            \end{matrix}
+            \right.$
+    \end{enumerate}
+\end{theorem}
+\begin{proof}
+    \textbf{Упражнение}.
+\end{proof}
+
+\textbf{Упражнение.} Выписать ПМП для задачи быстродействия для неавтономной системы.
